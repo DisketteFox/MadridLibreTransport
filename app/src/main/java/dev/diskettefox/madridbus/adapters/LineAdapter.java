@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,18 +14,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import dev.diskettefox.madridbus.LineActivity;
 import dev.diskettefox.madridbus.R;
-import dev.diskettefox.madridbus.StopActivity;
 import dev.diskettefox.madridbus.api.LineModel;
 
 public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<LineModel.Data> data;
-
 
     public LineAdapter(Context context, ArrayList<LineModel.Data> data) {
         this.context = context;
