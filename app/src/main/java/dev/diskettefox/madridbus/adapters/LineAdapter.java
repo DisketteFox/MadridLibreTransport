@@ -2,6 +2,8 @@ package dev.diskettefox.madridbus.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +19,12 @@ import java.util.ArrayList;
 
 import dev.diskettefox.madridbus.LineActivity;
 import dev.diskettefox.madridbus.R;
-import dev.diskettefox.madridbus.api.LineModel;
+import dev.diskettefox.madridbus.models.LineModel;
 
 public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
 
     private final Context context;
     private final ArrayList<LineModel.Data> data;
-
     public LineAdapter(Context context, ArrayList<LineModel.Data> data) {
         this.context = context;
         this.data = data;
@@ -48,30 +49,49 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
             Intent intent = new Intent(context, LineActivity.class);
             intent.putExtra("lineId", line.getLineId());
             intent.putExtra("lineLabel", line.getLabel());
+            intent.putExtra("dsA", line.getNameA());
+            intent.putExtra("dsB", line.getNameB());
+            intent.putExtra("lineColor", line.getColor());
             context.startActivity(intent);
         });
 
+        Drawable fondo=holder.tvLineLabel.getBackground();
+
         if (line.getLineId() > 500 & line.getLineId() < 600) {
-            holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
+            GradientDrawable fondoForma= (GradientDrawable) fondo;
+            fondoForma.setColor(ContextCompat.getColor(context, R.color.black));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.gold));
+            line.setColor("black");
         } else if (line.getLineId() == 203) {
-            holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.gold));
+            GradientDrawable fondoForma= (GradientDrawable) fondo;
+            fondoForma.setColor(ContextCompat.getColor(context, R.color.gold));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.black));
-        } else if (line.getLineId() > 360 & line.getLineId() < 362) {
-            holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.turquoise));
+            line.setColor("gold");
+        } else if (line.getLineId() > 360 & line.getLineId() < 363) {
+            GradientDrawable fondoForma= (GradientDrawable) fondo;
+            fondoForma.setColor(ContextCompat.getColor(context, R.color.turquoise));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.white));
+            line.setColor("turquoise");
         } else if (line.getLineId() > 89 & line.getLineId() < 100) {
-            holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.lightblue));
+            GradientDrawable fondoForma= (GradientDrawable) fondo;
+            fondoForma.setColor(ContextCompat.getColor(context, R.color.lightblue));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.white));
+            line.setColor("lightblue");
         } else if (line.getLineId() > 451 & line.getLineId() < 458) {
-            holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.brown));
+            GradientDrawable fondoForma= (GradientDrawable) fondo;
+            fondoForma.setColor(ContextCompat.getColor(context, R.color.brown));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.white));
+            line.setColor("brown");
         } else if (line.getLineId() > 600 & line.getLineId() < 604) {
-            holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
+            GradientDrawable fondoForma= (GradientDrawable) fondo;
+            fondoForma.setColor(ContextCompat.getColor(context, R.color.yellow));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.black));
+            line.setColor("yellow");
         } else {
-            holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.blue));
+            GradientDrawable fondoForma= (GradientDrawable) fondo;
+            fondoForma.setColor(ContextCompat.getColor(context, R.color.blue));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.white));
+            line.setColor("blue");
         }
     }
 

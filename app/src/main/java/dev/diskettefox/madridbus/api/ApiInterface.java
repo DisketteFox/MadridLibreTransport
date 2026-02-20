@@ -1,5 +1,8 @@
 package dev.diskettefox.madridbus.api;
 
+import dev.diskettefox.madridbus.models.LineModel;
+import dev.diskettefox.madridbus.models.StopModel;
+import dev.diskettefox.madridbus.models.TimeModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -30,7 +33,7 @@ public interface ApiInterface{
 
     // Interfaces for lines
     @GET("https://datos.emtmadrid.es/v2/transport/busemtmad/lines/info/{dateref}/")
-    Call<StopModel> getLines(
+    Call<LineModel> getLines(
             @Header("accessToken") String accessToken
     );
     
