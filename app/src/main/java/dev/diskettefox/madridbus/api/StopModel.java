@@ -52,6 +52,9 @@ public class StopModel {
         @SerializedName("headerB")
         private String headerB;
 
+        private String timeArriving;
+        private String timeNext;
+
         public String getLineId() {
             return lineId;
         }
@@ -66,6 +69,22 @@ public class StopModel {
         }
         public String getHeaderB() {
             return headerB;
+        }
+
+        public String getTimeArriving() {
+            return timeArriving;
+        }
+
+        public void setTimeArriving(String timeArriving) {
+            this.timeArriving = timeArriving;
+        }
+
+        public String getTimeNext() {
+            return timeNext;
+        }
+
+        public void setTimeNext(String timeNext) {
+            this.timeNext = timeNext;
         }
     }
 }
