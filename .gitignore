@@ -1,10 +1,15 @@
 *.iml
 .gradle
 /local.properties
-/.idea/
+.idea
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+# Fastlane (Only ignore reports and screenshots, keep metadata for F-Droid)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots

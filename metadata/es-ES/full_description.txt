@@ -1,0 +1,8 @@
+Madrid Transporte Libre es una aplicación de código abierto que permite consultar los tiempos de espera de los autobuses y la información de las líneas en Madrid.
+
+Características:
+- Horarios de llegada de los autobuses en tiempo real.
+- Información detallada de todas las líneas de la EMT.
+- Vista en mapa de las paradas de autobús.
+- Paradas favoritas para un acceso rápido.
+- Enfocada en la privacidad: sin seguimiento, sin anuncios.

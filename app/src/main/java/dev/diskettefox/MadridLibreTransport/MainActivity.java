@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     TokenModel token = response.body();
 
-                    if (token.getCode() == 01) {
+                    if (token.getCode() == 01 | token.getCode() == 00) {
                         if (token.getData() != null) {
                             TokenModel.Data data = token.getData().get(0);
                             Log.d("Token", data.getAccessToken());
@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
                             loadMain(savedInstanceState);
                         }
-                    } else {
+                    }
+                    if (token.getCode() == 89) {
                         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                         startActivity(intent);
                     }
