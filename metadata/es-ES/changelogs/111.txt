@@ -1,0 +1,4 @@
+Pequeñas correcciones y algunas novedades
+- Se han eliminado archivos innecesarios del proyecto
+- Se ha corregido el número de versión
+- Se ha corregido un error donde la aplicación no iniciaba correctamente

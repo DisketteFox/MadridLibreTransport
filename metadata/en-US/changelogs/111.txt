@@ -1,0 +1,4 @@
+Minor fixes and some additions
+- Removed unnecesary files from the project
+- Fixed version number
+- Fixed error where app doesn't start correctly

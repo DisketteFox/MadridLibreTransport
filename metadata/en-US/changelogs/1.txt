@@ -1,0 +1,4 @@
+Initial release of Madrid Libre Transport
+- Real-time EMT bus arrival times
+- Line and stop information
+- Favorites management

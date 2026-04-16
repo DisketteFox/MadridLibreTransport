@@ -1,0 +1,3 @@
+Project structure changed
+- Changed package name
+- Added full translation to Spanish

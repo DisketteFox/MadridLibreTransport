@@ -1,8 +1,9 @@
 <p align=center><image src="./docs/images/logo.png" height="150" /></p>
 <h1 align="center">Madrid Libre Transport</h1>
-
-[![Static Badge](https://img.shields.io/badge/-Figma-d8cded?style=flat&logo=Figma&)](https://www.figma.com/design/BzCBkvpquUvUQghGU2Qyu1/)
-![Static Badge](https://img.shields.io/badge/-Android_Studio-10161d?style=flat&logo=android)
+<div display="flex" align=center>
+    <a href="https://codeberg.org/DisketteFox/madrid-libre-transport/releases"><img alt="Get it on Codeberg" src="docs/images/badge-codeberg.png" height=100></a>
+    <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/DisketteFox/madrid-libre-transport/"><img alt="Get it on Obtanium" src="docs/images/badge-obtanium.png" height=100></a>
+</div>
 
 **Madrid Libre Transport** is an open source Android app that offers real time information about EMT buses arriving time, lines information and routes of these lines.
 
