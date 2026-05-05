@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -15,32 +16,25 @@ public class FavoritesManager {
 
     public static void addFavorite(Context context, String stopId) {
         List<Integer> favorites = getFavorites(context);
-        int id;
-        try {
-            id = Integer.parseInt(stopId);
-        } catch (NumberFormatException e) {
-            return;
-        }
+        int id = Integer.parseInt(stopId);
         if (!favorites.contains(id)) {
             favorites.add(id);
             saveFavorites(context, favorites);
         }
     }
-    public static void addFavoriteWithName(Context context, String stopId, String customName){
-        addFavorite(context, stopId);
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putString(KEY_FAVORITE_NAMES + stopId, customName).apply();
-    }
 
     public static void removeFavorite(Context context, String stopId) {
         List<Integer> favorites = getFavorites(context);
-        try {
-            favorites.remove(Integer.valueOf(stopId));
-        } catch (NumberFormatException ignored) {}
+        favorites.remove(Integer.valueOf(stopId));
         saveFavorites(context, favorites);
-        
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        prefs.edit().remove(KEY_FAVORITE_NAMES + stopId).apply();
+    }
+
+    public static void addFavoriteWithName(Context context, String stopId, String customName){
+        addFavorite(context, stopId);
+
+        // Saves the name
+        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        sharedPref.edit().putString(KEY_FAVORITE_NAMES + stopId, customName).apply();
     }
 
     public static boolean isFavorite(Context context, String stopId) {
@@ -51,40 +45,29 @@ public class FavoritesManager {
         }
     }
 
+    public static void saveFavorites(Context context, List<Integer> favoriteIds) {
+        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        List<String> stringIds = new ArrayList<>();
+        for (Integer id : favoriteIds) {
+            stringIds.add(String.valueOf(id));
+        }
+        sharedPref.edit().putString(KEY_FAVORITES, TextUtils.join(",", stringIds)).apply();
+    }
+
     public static List<Integer> getFavorites(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String favoritesString = prefs.getString(KEY_FAVORITES, "");
+        SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String favoritesString = sharedPref.getString(KEY_FAVORITES, "");
+
+        if (favoritesString.isEmpty()) return Collections.emptyList();
+
         List<Integer> favoriteIds = new ArrayList<>();
-        if (!favoritesString.isEmpty()) {
-            String[] ids = favoritesString.split(",");
-            for (String id : ids) {
-                try {
-                    favoriteIds.add(Integer.parseInt(id));
-                } catch (NumberFormatException ignored) {}
-            }
-        } else {
-            Set<String> oldFavorites = prefs.getStringSet("favorite_stops", null);
-            if (oldFavorites != null) {
-                for (String id : oldFavorites) {
-                    try {
-                        favoriteIds.add(Integer.parseInt(id));
-                    } catch (NumberFormatException ignored) {}
-                }
-                saveFavorites(context, favoriteIds);
-            }
+        for (String id : favoritesString.split(",")) {
+            favoriteIds.add(Integer.parseInt(id));
         }
         return favoriteIds;
     }
     public static String getFavoriteName(Context context, String stopId) {
         SharedPreferences pref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         return pref.getString(KEY_FAVORITE_NAMES + stopId, null);
-    }
-    public static void saveFavorites(Context context, List<Integer> favoriteIds) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        List<String> stringIds = new ArrayList<>();
-        for (Integer id : favoriteIds) {
-            stringIds.add(String.valueOf(id));
-        }
-        prefs.edit().putString(KEY_FAVORITES, TextUtils.join(",", stringIds)).apply();
     }
 }
