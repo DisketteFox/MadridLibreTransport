@@ -41,6 +41,7 @@ public class LineActivityAdapter extends RecyclerView.Adapter<LineActivityAdapte
         holder.tvLineNameA.setText(line.getNameA());
         holder.tvLineNameB.setText(line.getNameB());
 
+        // BIG LIST OF COLORS
         if (line.getLineId() > 500 & line.getLineId() < 600) {
             holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.gold));

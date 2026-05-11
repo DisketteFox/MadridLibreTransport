@@ -51,15 +51,12 @@ public class FragmentStop extends Fragment {
     private StopAdapter adapter;
     private LoadingIndicator loadingIndicator;
     private LinearLayout noFavorites, noConnection;
-
     private List<Integer> stopIds = new ArrayList<>();
     private int responsesReceived = 0;
     private final Map<Integer, Integer> stopIdToIndex = new HashMap<>();
-
     private List<StopsModel.Stops> allStops = new ArrayList<>();
     private final List<StopsModel.Stops> filteredStops = new ArrayList<>();
     private SuggestionAdapter suggestionAdapter;
-
     private int currentLoadId = 0;
 
     @Override
@@ -70,6 +67,7 @@ public class FragmentStop extends Fragment {
         noFavorites = view.findViewById(R.id.no_favorites);
         noConnection = view.findViewById(R.id.no_connection);
 
+        // Toolbar logic
         MaterialToolbar toolbar = view.findViewById(R.id.my_toolbar);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.login) {
@@ -89,7 +87,6 @@ public class FragmentStop extends Fragment {
         adapter = new StopAdapter(getContext(), stopsList);
         recyclerStops.setAdapter(adapter);
 
-
         // Drag and Drop logic
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
@@ -107,9 +104,7 @@ public class FragmentStop extends Fragment {
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // Not implemented (Tho I don't think it'll be used at all)
-            }
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {}
         });
         itemTouchHelper.attachToRecyclerView(recyclerStops);
 
@@ -117,7 +112,8 @@ public class FragmentStop extends Fragment {
         SearchView searchView = view.findViewById(R.id.search_view_Stops);
         RecyclerView recyclerSuggestions = view.findViewById(R.id.recycler_suggestions);
         recyclerSuggestions.setLayoutManager(new LinearLayoutManager(getContext()));
-        
+
+        // Suggestions logic
         suggestionAdapter = new SuggestionAdapter(filteredStops, stop -> {
             Intent intent = new Intent(getContext(), StopActivity.class);
             intent.putExtra("stopId", stop.getStopId());
@@ -140,7 +136,7 @@ public class FragmentStop extends Fragment {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Handle Search action on keyboard
+        // Handle search action on keyboard
         searchView.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
                 String text = v.getText().toString();
@@ -158,20 +154,21 @@ public class FragmentStop extends Fragment {
 
                         searchView.hide();
                     } catch (NumberFormatException e) {
+                        Log.d("Search", "Number format error");
+                        /*
                         if (getContext() != null) {
                             Intent intent = new Intent(getContext(), StopActivity.class);
                             intent.putExtra("stopName", text);
                             getContext().startActivity(intent);
                         }
+                        */
                     }
                 }
                 return true;
             }
             return false;
         });
-
         fetchAllStops();
-
         return view;
     }
 
@@ -180,7 +177,7 @@ public class FragmentStop extends Fragment {
         String accessToken = ApiCall.token;
         if (accessToken == null || accessToken.isEmpty()) return;
 
-        apiInterface.getStopsList(accessToken).enqueue(new Callback<StopsModel>() {
+        apiInterface.getStopsList(accessToken).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<StopsModel> call, @NonNull Response<StopsModel> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -20,9 +20,7 @@ public class LineModel {
         private String nameB;
         @SerializedName("label")
         private String label;
-
         private String color;
-
         public int getLineId() {
             return lineId;
         }
@@ -38,7 +36,6 @@ public class LineModel {
         public String getColor() {
             return color;
         }
-
         public void setColor(String color) {
             this.color = color;
         }
