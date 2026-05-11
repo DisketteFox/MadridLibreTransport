@@ -62,10 +62,9 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
             // Clear previous views
             holder.linesContainer.removeAllViews();
 
-            // BIG LIST OF COLORS
             List<StopModel.Dataline> lines = stop.getDataLine();
             if (lines != null) {
-                if (lines.size() < 5) {
+                if (lines.size() < 6) {
                     for (StopModel.Dataline line : lines) {
                         View lineView = LayoutInflater.from(context).inflate(R.layout.button_line, holder.linesContainer, false);
                         Button btnLine = lineView.findViewById(R.id.line_button);
@@ -75,6 +74,8 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
                             intent.putExtra("stopName", stop.getName());
                             context.startActivity(intent);
                         });
+
+                        // BIG LIST OF COLORS
                         if (Integer.parseInt(line.getLineId()) > 500 & Integer.parseInt(line.getLineId()) < 600) {
                             btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
                             btnLine.setTextColor(ContextCompat.getColor(context, R.color.gold));
@@ -93,18 +94,48 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
                         } else if (Integer.parseInt(line.getLineId()) > 600 & Integer.parseInt(line.getLineId()) < 604) {
                             btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
                             btnLine.setTextColor(ContextCompat.getColor(context, R.color.black));
+                        } else {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.blue));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.white));
                         }
                         btnLine.setText(line.getLabel());
                         holder.linesContainer.addView(lineView);
                     }
                 } else {
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < 6; i++) {
                         View lineView = LayoutInflater.from(context).inflate(R.layout.button_line, holder.linesContainer, false);
                         Button btnLine = lineView.findViewById(R.id.line_button);
-                        if (i < 4) {
+
+                        // BIG LIST OF COLORS
+                        if (Integer.parseInt(lines.get(i).getLineId()) > 500 & Integer.parseInt(lines.get(i).getLineId()) < 600) {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.gold));
+                        } else if (Integer.parseInt(lines.get(i).getLineId()) == 203) {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.gold));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.black));
+                        } else if (Integer.parseInt(lines.get(i).getLineId()) > 360 & Integer.parseInt(lines.get(i).getLineId()) < 362) {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.turquoise));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.white));
+                        } else if (Integer.parseInt(lines.get(i).getLineId()) > 89 & Integer.parseInt(lines.get(i).getLineId()) < 100) {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.lightblue));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.white));
+                        } else if (Integer.parseInt(lines.get(i).getLineId()) > 451 & Integer.parseInt(lines.get(i).getLineId()) < 458) {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.brown));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.white));
+                        } else if (Integer.parseInt(lines.get(i).getLineId()) > 600 & Integer.parseInt(lines.get(i).getLineId()) < 604) {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.black));
+                        } else {
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.blue));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.white));
+                        }
+
+                        if (i < 5) {
                             btnLine.setText(lines.get(i).getLabel());
                         } else {
                             btnLine.setText("...");
+                            btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.blue));
+                            btnLine.setTextColor(ContextCompat.getColor(context, R.color.white));
                         }
                         holder.linesContainer.addView(lineView);
                     }
