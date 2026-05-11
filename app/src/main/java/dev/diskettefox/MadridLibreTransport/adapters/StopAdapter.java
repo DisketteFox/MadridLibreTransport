@@ -43,14 +43,12 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull StopAdapter.ViewHolder holder, int position) {
         StopModel.Stop stop = stopsList.get(position);
-
         if (stop != null) {
             holder.tvStopId.setText(stop.getStopId());
-            //holder.tvStopName.setText(stop.getName());
-            String nombreFav= FavoritesManager.getFavoriteName(context, stop.getStopId());
-            if (nombreFav!=null){
-                holder.tvStopName.setText(nombreFav);
-            }else{
+            String favoriteName = FavoritesManager.getFavoriteName(context, stop.getStopId());
+            if (favoriteName != null) {
+                holder.tvStopName.setText(favoriteName);
+            } else {
                 holder.tvStopName.setText(stop.getName());
             }
 
@@ -64,6 +62,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
             // Clear previous views
             holder.linesContainer.removeAllViews();
 
+            // BIG LIST OF COLORS
             List<StopModel.Dataline> lines = stop.getDataLine();
             if (lines != null) {
                 if (lines.size() < 5) {
@@ -123,7 +122,6 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
         TextView tvStopId, tvStopName;
         CardView card;
         LinearLayout linesContainer;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvStopId = itemView.findViewById(R.id.stop_id_Stops);

@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class StopsModel {
-
     @SerializedName("code")
     private String code;
     @SerializedName("data")
@@ -18,20 +17,15 @@ public class StopsModel {
     }
 
     public static class Stops {
-
         @SerializedName("node")
         private String stopId;
         @SerializedName("name")
         private String stopName;
-
         public String getStopName() {
             return stopName;
         }
-
         public String getStopId() {
             return stopId;
         }
     }
-
-
 }

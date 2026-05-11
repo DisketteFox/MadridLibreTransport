@@ -18,9 +18,7 @@ public class TimeRequest {
     @SerializedName("DateTime_Referenced_Incidencies_YYYYMMDD")
     private String dateTimeReferencedIncidenciesYYYYMMDD = "20260219";
 
-    public TimeRequest() {
-
-    }
+    public TimeRequest() {}
 
     public static TimeRequest get() {
         return new TimeRequest();

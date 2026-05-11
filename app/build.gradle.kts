@@ -13,7 +13,7 @@ android {
         applicationId = "dev.diskettefox.madridbus"
         minSdk = 26
         targetSdk = 36
-        versionCode = 111
+        versionCode = 120
         versionName = "v1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

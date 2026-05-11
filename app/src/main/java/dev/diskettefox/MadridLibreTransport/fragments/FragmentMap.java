@@ -22,7 +22,6 @@ public class FragmentMap extends Fragment {
         LatLong center = new LatLong(40.416974, -3.703634);
         mapView.setCenter(center);
 
-
         return view;
     }
 }

@@ -67,7 +67,7 @@ public class FragmentLines extends Fragment {
         // Check for connection to API
         checkPing(apiInterface);
 
-        // Homemade searchbar
+        // Searchbar logic
         SearchBar searchBar = view.findViewById(R.id.search_bar_Lines);
         EditText editText = view.findViewById(R.id.lineET);
         editText.addTextChangedListener(new TextWatcher() {
@@ -125,7 +125,6 @@ public class FragmentLines extends Fragment {
                     }
 
                 } else {
-                    // Not intended to be  visible for user
                     Log.e("API Error", "Unable to connect to database");
                     showNoConnection();
                 }
@@ -134,7 +133,6 @@ public class FragmentLines extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<LineModel> call, @NonNull Throwable t) {
-                // Not intended to be  visible for user
                 Log.e("Call Error", "Error retrieving lines",t);
                 hideLoadingIndicator(); // Hide loading indicator if it fails
             }
@@ -146,17 +144,11 @@ public class FragmentLines extends Fragment {
             loadingIndicator.setVisibility(View.GONE);
         }
     }
-    private void showLoadingIndicator() {
-        if (loadingIndicator != null) {
-            loadingIndicator.setVisibility(View.VISIBLE);
-        }
-    }
     private void showNoConnection() {
         if (noConnection != null) {
             noConnection.setVisibility(View.VISIBLE);
         }
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

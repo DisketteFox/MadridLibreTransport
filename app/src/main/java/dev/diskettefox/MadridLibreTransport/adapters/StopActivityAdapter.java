@@ -57,6 +57,7 @@ public class StopActivityAdapter extends RecyclerView.Adapter<StopActivityAdapte
                 holder.timeNext.setText("---");
             }
 
+            // BIG LIST OF COLORS
             try {
                 int lineIdInt = Integer.parseInt(line.getLineId());
                 if (lineIdInt > 500 && lineIdInt < 600) {
