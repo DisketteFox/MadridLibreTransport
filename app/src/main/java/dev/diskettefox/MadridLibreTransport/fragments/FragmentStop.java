@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dev.diskettefox.MadridLibreTransport.About;
 import dev.diskettefox.MadridLibreTransport.FavoritesManager;
 import dev.diskettefox.MadridLibreTransport.LoginActivity;
 import dev.diskettefox.MadridLibreTransport.R;
@@ -75,7 +76,7 @@ public class FragmentStop extends Fragment {
                 startActivity(intent);
                 return true;
             } else if (item.getItemId() == R.id.about) {
-                Intent intent = new Intent(getContext(), AboutActivity.class);
+                Intent intent = new Intent(getContext(), About.class);
                 startActivity(intent);
                 return true;
             }

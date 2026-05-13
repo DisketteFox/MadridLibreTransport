@@ -16,6 +16,11 @@
         android:theme="@style/Theme.MadridBus"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".About"
+            android:exported="false"
+            android:label="@string/title_activity_about"
+            android:theme="@style/Theme.MadridBus" />
+        <activity
             android:name=".StopActivity"
             android:exported="false"
             android:label="@string/title_activity_stop"
