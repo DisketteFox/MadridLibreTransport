@@ -82,7 +82,7 @@ public class StopAdapter extends RecyclerView.Adapter<StopAdapter.ViewHolder> {
                         } else if (Integer.parseInt(line.getLineId()) == 203) {
                             btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.gold));
                             btnLine.setTextColor(ContextCompat.getColor(context, R.color.black));
-                        } else if (Integer.parseInt(line.getLineId()) > 360 & Integer.parseInt(line.getLineId()) < 362) {
+                        } else if (Integer.parseInt(line.getLineId()) > 360 & Integer.parseInt(line.getLineId()) < 363) {
                             btnLine.setBackgroundColor(ContextCompat.getColor(context, R.color.turquoise));
                             btnLine.setTextColor(ContextCompat.getColor(context, R.color.white));
                         } else if (Integer.parseInt(line.getLineId()) > 89 & Integer.parseInt(line.getLineId()) < 100) {
