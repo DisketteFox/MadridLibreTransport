@@ -48,7 +48,7 @@ public class LineActivityAdapter extends RecyclerView.Adapter<LineActivityAdapte
         } else if (line.getLineId() == 203) {
             holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.gold));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.black));
-        } else if (line.getLineId() > 360 & line.getLineId() < 362) {
+        } else if (line.getLineId() > 360 & line.getLineId() < 363) {
             holder.tvLineLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.turquoise));
             holder.tvLineLabel.setTextColor(ContextCompat.getColor(context, R.color.white));
         } else if (line.getLineId() > 89 & line.getLineId() < 100) {

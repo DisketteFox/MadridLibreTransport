@@ -54,7 +54,7 @@ public class BusTimeAdapter extends RecyclerView.Adapter<BusTimeAdapter.ViewHold
                 holder.cardColor.setBackgroundColor(ContextCompat.getColor(context, R.color.gold));
                 holder.busDirection.setTextColor(ContextCompat.getColor(context, R.color.black));
                 holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.gold));
-            } else if (Integer.parseInt(line.getLineId()) > 360 & Integer.parseInt(line.getLineId()) < 362) {
+            } else if (Integer.parseInt(line.getLineId()) > 360 & Integer.parseInt(line.getLineId()) < 363) {
                 holder.cardColor.setBackgroundColor(ContextCompat.getColor(context, R.color.turquoise));
                 holder.busDirection.setTextColor(ContextCompat.getColor(context, R.color.white));
                 holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.turquoise));

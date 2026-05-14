@@ -68,7 +68,7 @@ public class StopActivityAdapter extends RecyclerView.Adapter<StopActivityAdapte
                     holder.cardColor.setBackgroundColor(ContextCompat.getColor(context, R.color.gold));
                     holder.busDirection.setTextColor(ContextCompat.getColor(context, R.color.black));
                     holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.gold));
-                } else if (lineIdInt > 360 && lineIdInt < 362) {
+                } else if (lineIdInt > 360 && lineIdInt < 363) {
                     holder.cardColor.setBackgroundColor(ContextCompat.getColor(context, R.color.turquoise));
                     holder.busDirection.setTextColor(ContextCompat.getColor(context, R.color.white));
                     holder.busNumber.setTextColor(ContextCompat.getColor(context, R.color.turquoise));
