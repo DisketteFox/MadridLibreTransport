@@ -1,26 +1,24 @@
 package dev.diskettefox.MadridLibreTransport.fragments
 
-import android.Manifest
+import android.Manifest.permission.*
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.fragment.app.Fragment
+import com.google.android.gms.location.*
+import com.google.android.gms.location.Priority.PRIORITY_HIGH_ACCURACY
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dev.diskettefox.MadridLibreTransport.R
 import dev.diskettefox.MadridLibreTransport.StopActivity
-import dev.diskettefox.MadridLibreTransport.api.ApiCall
-import dev.diskettefox.MadridLibreTransport.api.ApiInterface
+import dev.diskettefox.MadridLibreTransport.api.*
 import dev.diskettefox.MadridLibreTransport.models.StopsModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import org.mapsforge.core.model.LatLong
-import org.mapsforge.core.model.Point
+import org.mapsforge.core.model.*
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory
 import org.mapsforge.map.android.util.AndroidUtil
 import org.mapsforge.map.android.view.MapView
@@ -29,212 +27,136 @@ import org.mapsforge.map.layer.download.TileDownloadLayer
 import org.mapsforge.map.layer.download.tilesource.OpenStreetMapMapnik
 import org.mapsforge.map.layer.overlay.Marker
 import org.mapsforge.map.model.common.Observer
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.*
 
 class FragmentMap : Fragment(), Observer {
     private var mapView: MapView? = null
     private var tileCache: TileCache? = null
     private var tileLayer: TileDownloadLayer? = null
-
-    private var zoomIn: FloatingActionButton? = null
-    private var zoomOut: FloatingActionButton? = null
-    private var locateMe: FloatingActionButton? = null
-
+    private var userMarker: Marker? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
-            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
-            moveToCurrentLocation()
-        } else {
-            Toast.makeText(requireContext(), "Permission denied", Toast.LENGTH_SHORT).show()
+    private val locCallback = object : LocationCallback() {
+        override fun onLocationResult(lr: LocationResult) {
+            lr.lastLocation?.let { updatePos(LatLong(it.latitude, it.longitude)) }
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val permLauncher = registerForActivityResult(RequestMultiplePermissions()) { 
+        if (it.values.any { p -> p }) move() else toast(R.string.error_location)
+    }
+
+    override fun onCreate(s: Bundle?) {
+        super.onCreate(s)
         AndroidGraphicFactory.createInstance(requireActivity().application)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.view_map, container, false)
-        mapView = view.findViewById(R.id.map_view)
-        return view
-    }
+    override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?) = 
+        i.inflate(R.layout.view_map, c, false).also { mapView = it.findViewById(R.id.map_view) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(v: View, s: Bundle?) {
+        super.onViewCreated(v, s)
+        val mv = mapView ?: return
+        v.findViewById<FloatingActionButton>(R.id.zoom_in).setOnClickListener { mv.model.mapViewPosition.zoomIn() }
+        v.findViewById<FloatingActionButton>(R.id.zoom_out).setOnClickListener { mv.model.mapViewPosition.zoomOut() }
+        v.findViewById<FloatingActionButton>(R.id.locate_me).setOnClickListener { move() }
 
-        val mapView = this.mapView ?: return
+        mv.apply {
+            mapScaleBar.isVisible = true
+            setBuiltInZoomControls(false)
+            setZoomLevel(15.toByte())
+            setZoomLevelMax(18.toByte())
+            model.mapViewPosition.apply {
+                addObserver(this@FragmentMap)
+                setCenter(LatLong(40.416974, -3.703634))
+            }
+        }
 
-        zoomIn = view.findViewById(R.id.zoom_in)
-        zoomOut = view.findViewById(R.id.zoom_out)
-        locateMe = view.findViewById(R.id.locate_me)
-
-        zoomIn?.setOnClickListener { mapView.model.mapViewPosition.zoomIn() }
-        zoomOut?.setOnClickListener { mapView.model.mapViewPosition.zoomOut() }
-        locateMe?.setOnClickListener { checkLocationPermissionAndMove() }
-
-        mapView.mapScaleBar.isVisible = true
-        mapView.setBuiltInZoomControls(false)
-        mapView.setZoomLevel(15.toByte())
-        mapView.setZoomLevelMax(18.toByte())
-
-        OpenStreetMapMapnik.INSTANCE.setUserAgent("MadridLibreTransport")
-
-        tileCache = AndroidUtil.createTileCache(
-            requireContext(), "mapcache",
-            mapView.model.displayModel.tileSize, 1f,
-            mapView.model.frameBufferModel.overdrawFactor
-        )
-
-        tileLayer = TileDownloadLayer(
-            tileCache, mapView.model.mapViewPosition,
-            OpenStreetMapMapnik.INSTANCE, AndroidGraphicFactory.INSTANCE
-        )
-
-        mapView.layerManager.layers.add(tileLayer)
-        tileLayer?.onResume()
-
-        mapView.model.mapViewPosition.addObserver(this)
-        updateZoomButtons()
-
-        val center = LatLong(40.416974, -3.703634)
-        mapView.setCenter(center)
+        OpenStreetMapMapnik.INSTANCE.userAgent = "MadridLibreTransport"
+        tileCache = AndroidUtil.createTileCache(requireContext(), "mapcache", mv.model.displayModel.tileSize, 1f, mv.model.frameBufferModel.overdrawFactor)
+        tileLayer = TileDownloadLayer(tileCache, mv.model.mapViewPosition, OpenStreetMapMapnik.INSTANCE, AndroidGraphicFactory.INSTANCE).also {
+            mv.layerManager.layers.add(it)
+            it.onResume()
+        }
 
         fetchStops()
+        move()
+    }
+
+    override fun onResume() = super.onResume().also { startLoc() }
+    override fun onPause() = super.onPause().also { fusedLocationClient.removeLocationUpdates(locCallback) }
+
+    private fun startLoc() {
+        if (checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PERMISSION_GRANTED) {
+            val req = LocationRequest.Builder(PRIORITY_HIGH_ACCURACY, 10000).setMinUpdateIntervalMillis(5000).build()
+            fusedLocationClient.requestLocationUpdates(req, locCallback, null)
+        }
     }
 
     private fun fetchStops() {
-        val accessToken = ApiCall.token
-        if (accessToken.isNullOrEmpty()) {
-            Log.e("FragmentMap", "No access token available")
-            return
-        }
-
-        val apiInterface = ApiCall.callApi().create(ApiInterface::class.java)
-        apiInterface.getStopsList(accessToken).enqueue(object : Callback<StopsModel> {
-            override fun onResponse(call: Call<StopsModel>, response: Response<StopsModel>) {
-                if (response.isSuccessful && response.body() != null) {
-                    val stops = response.body()?.stopsData
-                    if (stops != null) {
-                        displayStops(stops)
-                    }
-                } else {
-                    Log.e("FragmentMap", "Failed to fetch stops: ${response.code()}")
-                }
+        val token = ApiCall.token ?: return
+        ApiCall.callApi().create(ApiInterface::class.java).getStopsList(token).enqueue(object : Callback<StopsModel> {
+            override fun onResponse(c: Call<StopsModel>, r: Response<StopsModel>) {
+                r.body()?.stopsData?.let { displayStops(it) }
             }
-
-            override fun onFailure(call: Call<StopsModel>, t: Throwable) {
-                Log.e("FragmentMap", "Error fetching stops", t)
-            }
+            override fun onFailure(c: Call<StopsModel>, t: Throwable) { Log.e("Map", "Error", t) }
         })
     }
 
     private fun displayStops(stops: List<StopsModel.Stops>) {
-        val context = context ?: return
-        val mapView = this.mapView ?: return
-
-        val drawable = ContextCompat.getDrawable(context, R.drawable.ic_location_24dp) ?: return
-        val bitmap = AndroidGraphicFactory.convertToBitmap(drawable)
-
-        // Markers
-        for (stop in stops) {
-            val coords = stop.geometry?.coordinates
-            if (coords != null && coords.size >= 2) {
-                val latLong = LatLong(coords[1], coords[0])
-                val marker = StopMarker(latLong, bitmap, stop)
-                mapView.layerManager.layers.add(marker)
-            }
+        val mv = mapView ?: return
+        val bmp = AndroidGraphicFactory.convertToBitmap(getDrawable(requireContext(), R.drawable.ic_location_24dp)!!)
+        stops.forEach { stop ->
+            stop.geometry?.coordinates?.let { mv.layerManager.layers.add(StopMarker(LatLong(it[1], it[0]), bmp, stop)) }
         }
-        mapView.layerManager.redrawLayers()
+        mv.layerManager.redrawLayers()
     }
 
-    private fun checkLocationPermissionAndMove() {
-        when {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                moveToCurrentLocation()
-            }
-            else -> {
-                requestPermissionLauncher.launch(
-                    arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    )
-                )
+    private fun move() {
+        if (checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
+            permLauncher.launch(arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))
+            return
+        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
+            loc?.let { centerOn(LatLong(it.latitude, it.longitude)) } ?: run {
+                fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, null).addOnSuccessListener { it?.let { centerOn(LatLong(it.latitude, it.longitude)) } }
             }
         }
     }
 
-    private fun moveToCurrentLocation() {
-        try {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    val latLong = LatLong(location.latitude, location.longitude)
-                    mapView?.setCenter(latLong)
-                    mapView?.setZoomLevel(16.toByte())
-                } else {
-                    Toast.makeText(requireContext(), getString(R.string.error_location), Toast.LENGTH_SHORT).show()
-                }
-            }
-        } catch (e: SecurityException) {
-            Log.e("FragmentMap", "Security exception: ${e.message}")
-        }
+    private fun centerOn(ll: LatLong) {
+        updatePos(ll)
+        mapView?.apply { model.mapViewPosition.setCenter(ll); setZoomLevel(16.toByte()) }
     }
 
-    private inner class StopMarker(
-        latLong: LatLong,
-        bitmap: org.mapsforge.core.graphics.Bitmap,
-        val stop: StopsModel.Stops
-    ) : Marker(latLong, bitmap, 0, -bitmap.height / 2) {
-        override fun onTap(tapLatLong: LatLong, layerXY: Point, tapXY: Point): Boolean {
-            if (mapView != null && contains(layerXY, tapXY, mapView)) {
-                val intent = Intent(context, StopActivity::class.java)
-                intent.putExtra("stopId", stop.stopId)
-                intent.putExtra("stopName", stop.stopName)
-                startActivity(intent)
-                return true
-            }
-            return false
-        }
+    private fun updatePos(ll: LatLong) {
+        val mv = mapView ?: return
+        if (userMarker == null) {
+            val bmp = AndroidGraphicFactory.convertToBitmap(getDrawable(requireContext(), R.drawable.ic_my_location_24dp)!!)
+            userMarker = Marker(ll, bmp, 0, 0).also { mv.layerManager.layers.add(it) }
+        } else userMarker?.latLong = ll
+        mv.layerManager.redrawLayers()
     }
 
-    override fun onChange() {
-        activity?.runOnUiThread {
-            updateZoomButtons()
-        }
+    private inner class StopMarker(l: LatLong, b: org.mapsforge.core.graphics.Bitmap, val s: StopsModel.Stops) : Marker(l, b, 0, -b.height / 2) {
+        override fun onTap(tl: LatLong, ly: Point, ty: Point) = 
+            (mapView != null && contains(ly, ty, mapView)).also { if (it) startActivity(Intent(context, StopActivity::class.java).putExtra("stopId", s.stopId).putExtra("stopName", s.stopName)) }
     }
 
-    private fun updateZoomButtons() {
-        val mapView = this.mapView ?: return
-        val mvp = mapView.model.mapViewPosition
-        zoomIn?.isEnabled = mvp.zoomLevel < mvp.zoomLevelMax
-        zoomOut?.isEnabled = mvp.zoomLevel > mvp.zoomLevelMin
-    }
+    override fun onChange() = activity?.runOnUiThread {
+        val mvp = mapView?.model?.mapViewPosition ?: return@runOnUiThread
+        view?.findViewById<View>(R.id.zoom_in)?.isEnabled = mvp.zoomLevel < mvp.zoomLevelMax
+        view?.findViewById<View>(R.id.zoom_out)?.isEnabled = mvp.zoomLevel > mvp.zoomLevelMin
+    } ?: Unit
+
+    private fun toast(id: Int) = Toast.makeText(context, id, Toast.LENGTH_SHORT).show()
 
     override fun onDestroyView() {
-        mapView?.model?.mapViewPosition?.removeObserver(this)
-        tileLayer?.onPause()
-        mapView?.destroyAll()
+        mapView?.apply { model.mapViewPosition.removeObserver(this@FragmentMap); tileLayer?.onPause(); destroyAll() }
         tileCache?.destroy()
         AndroidGraphicFactory.clearResourceMemoryCache()
+        userMarker = null
         mapView = null
         super.onDestroyView()
     }
