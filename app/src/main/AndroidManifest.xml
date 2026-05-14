@@ -31,14 +31,9 @@
             android:label="@string/title_activity_line"
             android:theme="@style/Theme.MadridBus" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Login"
             android:exported="false"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.MadridBus" />
-        <activity
-            android:name=".AboutActivity"
-            android:exported="false"
-            android:label="@string/title_activity_about"
             android:theme="@style/Theme.MadridBus" />
         <activity
             android:name=".MainActivity"

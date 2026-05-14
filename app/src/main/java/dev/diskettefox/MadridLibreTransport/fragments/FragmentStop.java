@@ -32,14 +32,13 @@ import java.util.Map;
 
 import dev.diskettefox.MadridLibreTransport.About;
 import dev.diskettefox.MadridLibreTransport.FavoritesManager;
-import dev.diskettefox.MadridLibreTransport.LoginActivity;
+import dev.diskettefox.MadridLibreTransport.Login;
 import dev.diskettefox.MadridLibreTransport.R;
 import dev.diskettefox.MadridLibreTransport.StopActivity;
 import dev.diskettefox.MadridLibreTransport.adapters.StopAdapter;
 import dev.diskettefox.MadridLibreTransport.adapters.SuggestionAdapter;
 import dev.diskettefox.MadridLibreTransport.api.ApiCall;
 import dev.diskettefox.MadridLibreTransport.api.ApiInterface;
-import dev.diskettefox.MadridLibreTransport.AboutActivity;
 import dev.diskettefox.MadridLibreTransport.models.HelloModel;
 import dev.diskettefox.MadridLibreTransport.models.StopModel;
 import dev.diskettefox.MadridLibreTransport.models.StopsModel;
@@ -72,7 +71,7 @@ public class FragmentStop extends Fragment {
         MaterialToolbar toolbar = view.findViewById(R.id.my_toolbar);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.login) {
-                Intent intent = new Intent(getContext(), LoginActivity.class);
+                Intent intent = new Intent(getContext(), Login.class);
                 startActivity(intent);
                 return true;
             } else if (item.getItemId() == R.id.about) {
