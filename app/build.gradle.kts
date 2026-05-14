@@ -50,17 +50,18 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:5.0.5") // MIT and Apache 2.0
     
     // MapsForge Map (GPLv3)
-    implementation("com.github.mapsforge.mapsforge:mapsforge-core:0.27.0@jar")
-    implementation("com.github.mapsforge.mapsforge:mapsforge-map:0.27.0@jar")
-    implementation("com.github.mapsforge.mapsforge:mapsforge-map-reader:0.27.0@jar")
-    implementation("com.github.mapsforge.mapsforge:mapsforge-themes:0.27.0@jar")
-    implementation("com.github.mapsforge.mapsforge:mapsforge-map-android:0.27.0@jar")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-core:0.27.0")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-map:0.27.0")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-map-reader:0.27.0")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-themes:0.27.0")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-map-android:0.27.0")
     implementation("com.caverock:androidsvg:1.4")
 
     // MapsForge POI (GPLv3)
-    implementation("com.github.mapsforge.mapsforge:mapsforge-core:0.27.0@jar")
-    implementation("com.github.mapsforge.mapsforge:mapsforge-poi:0.27.0@jar")
-    implementation("com.github.mapsforge.mapsforge:mapsforge-poi-android:0.27.0@jar")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-core:0.27.0")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-poi:0.27.0")
+    implementation("com.github.mapsforge.mapsforge:mapsforge-poi-android:0.27.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
