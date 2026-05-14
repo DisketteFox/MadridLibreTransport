@@ -1,10 +1,10 @@
 package dev.diskettefox.MadridLibreTransport
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,19 +19,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import dev.diskettefox.MadridLibreTransport.ui.theme.MadridLibreTransportTheme
 // import dev.diskettefox.MadridLibreTransport.BuildConfig
-import java.time.Year
 
 @OptIn(ExperimentalMaterial3Api::class)
 class About : ComponentActivity() {
@@ -52,30 +53,16 @@ fun AboutScreen(
     onBackClick: () -> Unit,
 ) {
     val uriHandler = LocalUriHandler.current
-    val context = LocalContext.current
-    val year = remember { Year.now().toString() }
-    val appVersion = remember { "v1.2.0" }
-    val copyrightText = remember { "Open Apps Labs © $year" }
+    val appVersion = stringResource(R.string.version)
 
     val onOpenCodeberg = remember { { uriHandler.openUri("https://codeberg.org/DisketteFox") } }
     val onOpenSource = remember { { uriHandler.openUri("https://codeberg.org/DisketteFox/Madrid-Libre-Transport") } }
     val onOpenLicense = remember { { uriHandler.openUri("https://www.gnu.org/licenses/gpl-3.0.en.html") } }
     val onOpenAPI = remember { { uriHandler.openUri("https://datos.emtmadrid.es/m360-swagger/docs#/") } }
-    val onSupportEmail = remember {
-        {
-            val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = "mailto:example@diskettefox.dev".toUri()
-            }
-            try {
-                context.startActivity(intent)
-            } catch (e: Exception) {
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = "About",
@@ -85,13 +72,13 @@ fun AboutScreen(
                         letterSpacing = (-0.5).sp
                     )
                 },
-                actions = {
+                navigationIcon = {
                     Surface(
                         onClick = onBackClick,
                         shape = CircleShape,
                         color = MaterialTheme.colorScheme.surfaceContainer,
                         modifier = Modifier
-                            .padding(start = 12.dp, end = 12.dp)
+                            .padding(start = 12.dp)
                             .size(48.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
@@ -113,55 +100,69 @@ fun AboutScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            Spacer(modifier = Modifier.height(6.dp))
+            Image(
+                painter = painterResource(id = R.drawable.ic_mybus_24dp),
+                contentDescription = stringResource(R.string.description_emt_logo),
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(colorResource(id = R.color.blue))
+                    .padding(32.dp),
+                colorFilter = ColorFilter.tint(Color.White)
+            )
+            Text(
+                text = stringResource(R.string.app_name),
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(0.8f),
+                minLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+
             CardSection {
                 InfoRow(
-                    label = "APP",
-                    value = "Madrid Libre Transport",
-                    iconPainter = painterResource(id = R.drawable.ic_mybus_24dp),
-                    showChevron = false,
-                    onClick = {}
-                )
-                InfoDivider()
-                InfoRow(
-                    label = "VERSION",
+                    label = stringResource(R.string.title_version),
                     value = appVersion,
                     iconPainter = painterResource(id = R.drawable.account_tree),
                     showChevron = false,
                     onClick = {}
                 )
-            }
-
-            CardSection {
+                InfoDivider()
                 InfoRow(
-                    label = "DEVELOPER",
-                    value = "DisketteFox",
+                    label = stringResource(R.string.title_license),
+                    value = stringResource(R.string.license),
+                    iconPainter = painterResource(id = R.drawable.book),
+                    onClick = onOpenLicense
+                )
+                InfoDivider()
+                InfoRow(
+                    label = stringResource(R.string.title_developer),
+                    value = stringResource(R.string.developer),
                     iconPainter = painterResource(id = R.drawable.person),
                     onClick = onOpenCodeberg
                 )
-                InfoDivider()
-                InfoRow(
-                    label = "SOURCE CODE",
-                    value = "Madrid Libre Transport",
-                    iconPainter = painterResource(id = R.drawable.code),
-                    onClick = onOpenSource
-                )
             }
 
             CardSection {
                 InfoRow(
-                    label = "DATABASE",
-                    value = "OpenAPI EMT Madrid",
-                    iconPainter = painterResource(id = R.drawable.ic_emt),
-                    onClick = onOpenAPI
+                    label = stringResource(R.string.title_source_code),
+                    value = stringResource(R.string.app_name),
+                    iconPainter = painterResource(id = R.drawable.code),
+                    onClick = onOpenSource
                 )
                 InfoDivider()
                 InfoRow(
-                    label = "LICENSE",
-                    value = "GNU GPL v3.0",
-                    iconPainter = painterResource(id = R.drawable.outline_book_24),
-                    onClick = onOpenLicense
+                    label = stringResource(R.string.title_database),
+                    value = stringResource(R.string.api1),
+                    iconPainter = painterResource(id = R.drawable.ic_emt),
+                    onClick = onOpenAPI
                 )
             }
 
@@ -169,7 +170,7 @@ fun AboutScreen(
                 InfoRow(
                     label = "MADE WITH LOVE",
                     value = "In Spain",
-                    iconPainter = painterResource(id = R.drawable.heart_check),
+                    iconPainter = painterResource(id = R.drawable.favorite),
                     onClick = {},
                     showChevron = false
                 )
@@ -211,7 +212,7 @@ private fun InfoRow(
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .clip(RoundedCornerShape(8.dp))
+                .clip(RoundedCornerShape(20.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
         ) {
@@ -249,7 +250,7 @@ private fun InfoRow(
 
         if (showChevron) {
             Icon(
-                painter = painterResource(id = R.drawable.arrow_right),
+                painter = painterResource(id = R.drawable.open_in_new),
                 contentDescription = null,
                 modifier = Modifier.size(18.dp),
                 tint = MaterialTheme.colorScheme.outline

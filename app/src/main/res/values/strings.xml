@@ -58,12 +58,14 @@
     <string name="login">Login</string>
     <string name="signup">Don’t have an account? Sign up</string>
 
-    <string name="title_basic_info">Basic info</string>
-    <string name="title_version">Version</string>
-    <string name="title_database">Database</string>
-    <string name="title_legal_and_regulatory">Title &amp; regulatory</string>
-    <string name="title_license">License</string>
+    <string name="title_app">APP</string>
+    <string name="title_developer">DEVELOPER</string>
+    <string name="title_source_code">SOURCE CODE</string>
+    <string name="title_version">VERSION</string>
+    <string name="title_database">DATABASE</string>
+    <string name="title_license">LICENSE</string>
     <string name="api1">OpenAPI EMT Madrid</string>
+    <string name="developer">DisketteFox</string>
 
     <string name="favorite_name">Favorite name</string>
     <string name="save">Save</string>

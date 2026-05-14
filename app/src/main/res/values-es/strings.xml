@@ -58,12 +58,14 @@
     <string name="login">Iniciar sesión</string>
     <string name="signup">¿No tienes cuenta? Regístrate</string>
 
-    <string name="title_basic_info">Información básica</string>
-    <string name="title_version">Versión</string>
-    <string name="title_database">Base de datos</string>
-    <string name="title_legal_and_regulatory">Título y regulaciones</string>
-    <string name="title_license">Licencia</string>
+    <string name="title_app">APP</string>
+    <string name="title_developer">DESARROLLADOR</string>
+    <string name="title_source_code">CÓDIGO FUENTE</string>
+    <string name="title_version">VERSIÓN</string>
+    <string name="title_database">BASE DE DATOS</string>
+    <string name="title_license">LICENCIA</string>
     <string name="api1">OpenAPI EMT Madrid</string>
+    <string name="developer">DisketteFox</string>
 
     <string name="favorite_name">Nombre de favorito</string>
     <string name="save">Guardar</string>

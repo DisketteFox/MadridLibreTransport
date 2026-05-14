@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     if (token.getCode() == 89) {
-                        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                        Intent intent = new Intent(getBaseContext(), Login.class);
                         startActivity(intent);
                     }
 
