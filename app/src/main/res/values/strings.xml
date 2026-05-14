@@ -36,6 +36,7 @@
     <string name="error_time">Error retrieving times for lines</string>
     <string name="error_refreshing">Error refreshing</string>
     <string name="error_token">Token not found</string>
+    <string name="error_location">Location not found</string>
 
     <string name="invalid_stop">Invalid stop ID</string>
     <string name="invalid_line">Invalid line ID</string>
@@ -78,4 +79,7 @@
     <string name="description_bus_icon">A bus icon</string>
     <string name="description_map">A map of Madrid with indicated Bus and Metro lines</string>
     <string name="description_line_stops">A list of stops for this line</string>
+    <string name="zoom_in">Zoom in</string>
+    <string name="zoom_out">Zoom out</string>
+    <string name="my_location">My location</string>
 </resources>

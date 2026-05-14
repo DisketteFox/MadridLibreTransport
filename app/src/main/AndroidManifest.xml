@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -22,9 +24,22 @@
             android:theme="@style/Theme.MadridBus" />
         <activity
             android:name=".StopActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_stop"
-            android:theme="@style/Theme.MadridBus" />
+            android:theme="@style/Theme.MadridBus">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="emtmadrid.es" />
+                <data android:host="www.emtmadrid.es" />
+                <data android:path="/pmv.aspx" />
+                <data android:pathPrefix="/PMVVisor/pmv.aspx" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".LineActivity"
             android:exported="false"

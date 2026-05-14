@@ -36,6 +36,7 @@
     <string name="error_time">Error recibiendo tiempos de las líneas</string>
     <string name="error_refreshing">Error recargando</string>
     <string name="error_token">Token no encontrado</string>
+    <string name="error_location">Localización no encontrada</string>
 
     <string name="invalid_stop">ID de parada inválido</string>
     <string name="invalid_line">ID de línea inválido</string>
@@ -78,4 +79,7 @@
     <string name="description_bus_icon">Un icono de bus</string>
     <string name="description_map">Un mapa de Madrid con líneas de autobús y metro indicadas</string>
     <string name="description_line_stops">Una lista de paradas para esta línea</string>
+    <string name="zoom_in">Acercar</string>
+    <string name="zoom_out">Alejar</string>
+    <string name="my_location">Mi ubicación</string>
 </resources>

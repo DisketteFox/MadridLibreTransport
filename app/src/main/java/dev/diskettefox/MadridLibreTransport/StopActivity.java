@@ -30,6 +30,7 @@ import dev.diskettefox.MadridLibreTransport.api.ApiInterface;
 import dev.diskettefox.MadridLibreTransport.api.TimeRequest;
 import dev.diskettefox.MadridLibreTransport.models.StopModel;
 import dev.diskettefox.MadridLibreTransport.models.TimeModel;
+import dev.diskettefox.MadridLibreTransport.models.TokenModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +63,7 @@ public class StopActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(true);
         }
 
-        String stopId = getIntent().getStringExtra("stopId");
+        String stopId = getStopId();
         stopCard.setVisibility(View.GONE);
         loadingIndicator.setVisibility(View.VISIBLE);
 
@@ -80,13 +81,53 @@ public class StopActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         if (stopId != null && !stopId.isEmpty()) {
-            try {
-                fetchStopDetails(Integer.parseInt(stopId));
-            } catch (NumberFormatException e) {
-                Log.e("StopActivity", "Invalid stop ID format", e);
-                Toast.makeText(getBaseContext(), R.string.invalid_stop, Toast.LENGTH_SHORT).show();
+            if (ApiCall.token == null || ApiCall.token.isEmpty()) {
+                fetchTokenAndLoad(stopId);
+            } else {
+                try {
+                    fetchStopDetails(Integer.parseInt(stopId));
+                } catch (NumberFormatException e) {
+                    Log.e("StopActivity", "Invalid stop ID format", e);
+                    Toast.makeText(getBaseContext(), R.string.invalid_stop, Toast.LENGTH_SHORT).show();
+                }
             }
         }
+    }
+
+    private void fetchTokenAndLoad(String stopId) {
+        ApiInterface apiInterface = ApiCall.callApi().create(ApiInterface.class);
+
+        Call<TokenModel> call = apiInterface.getToken(MainActivity.CLIENT_ID, MainActivity.PASS_KEY);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<TokenModel> call, @NonNull Response<TokenModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    TokenModel tokenModel = response.body();
+                    if ((tokenModel.getCode() == 0 || tokenModel.getCode() == 1) && !tokenModel.getData().isEmpty()) {
+                        String token = tokenModel.getData().get(0).getAccessToken();
+                        ApiCall.setToken(token);
+                        try {
+                            fetchStopDetails(Integer.parseInt(stopId));
+                        } catch (NumberFormatException e) {
+                            Log.e("StopActivity", "Invalid stop ID format", e);
+                        }
+                    } else {
+                        Log.e("StopActivity", "Token error: " + tokenModel.getCode());
+                        Toast.makeText(StopActivity.this, "Error authenticating", Toast.LENGTH_SHORT).show();
+                        loadingIndicator.setVisibility(View.GONE);
+                    }
+                } else {
+                    Log.e("StopActivity", "Token request failed");
+                    loadingIndicator.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TokenModel> call, @NonNull Throwable t) {
+                Log.e("StopActivity", "Token request failure", t);
+                loadingIndicator.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void fetchStopDetails(int stopId) {
@@ -225,7 +266,7 @@ public class StopActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.toolbar_stop, menu);
 
         MenuItem favoriteItem = menu.findItem(R.id.favorite);
-        String stopId = getIntent().getStringExtra("stopId");
+        String stopId = getStopId();
 
         boolean isFavorite = false;
         if (stop != null) {
@@ -250,7 +291,7 @@ public class StopActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (itemId == R.id.update) {
-            String stopId = getIntent().getStringExtra("stopId");
+            String stopId = getStopId();
             if (stopId != null && !stopId.isEmpty()) {
                 try {
                     stopCard.setVisibility(View.GONE);
@@ -265,7 +306,7 @@ public class StopActivity extends AppCompatActivity {
             }
             return true;
         } else if (itemId == R.id.favorite) {
-            String currentStopId = stop != null ? stop.getStopId() : getIntent().getStringExtra("stopId");
+            String currentStopId = stop != null ? stop.getStopId() : getStopId();
             if (currentStopId == null) return true;
 
             if (stop == null) {
@@ -322,5 +363,13 @@ public class StopActivity extends AppCompatActivity {
         FavoritesManager.removeFavorite(this, stopId);
         Toast.makeText(this, R.string.message_favorite_remove, Toast.LENGTH_SHORT).show();
         Log.d("StopActivity", "Favorite removed: " + stopId);
+    }
+
+    private String getStopId() {
+        String stopId = getIntent().getStringExtra("stopId");
+        if (stopId == null && getIntent().getData() != null) {
+            stopId = getIntent().getData().getQueryParameter("stopnum");
+        }
+        return stopId;
     }
 }

@@ -28,6 +28,9 @@ import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static final String CLIENT_ID = "b0c015e3-7e51-401a-b69b-0c8bb6e6e55f";
+    public static final String PASS_KEY = "A5C462BF6FD9BE59C286125F9A4101BA38071FCB1D0CDA03F205C0F07DA8CE2E7E5D1AB6A5A2829D60A7C2E3E7116E134B7BBCE782ACB70DC7FA880A294F4D75";
+
 
 
     @Override
@@ -71,10 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void getToken(Bundle savedInstanceState) {
         ApiInterface apiInterface = ApiCall.callApi().create(ApiInterface.class);
-        String clientId = "b0c015e3-7e51-401a-b69b-0c8bb6e6e55f";
-        String passKey = "A5C462BF6FD9BE59C286125F9A4101BA38071FCB1D0CDA03F205C0F07DA8CE2E7E5D1AB6A5A2829D60A7C2E3E7116E134B7BBCE782ACB70DC7FA880A294F4D75";
 
-        Call<TokenModel> call = apiInterface.getToken(clientId, passKey);
+        Call<TokenModel> call = apiInterface.getToken(CLIENT_ID, PASS_KEY);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<TokenModel> call, @NonNull Response<TokenModel> response) {
