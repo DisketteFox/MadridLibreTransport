@@ -58,7 +58,7 @@ public class FavoritesManager {
         SharedPreferences sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String favoritesString = sharedPref.getString(KEY_FAVORITES, "");
 
-        if (favoritesString.isEmpty()) return Collections.emptyList();
+        if (favoritesString.isEmpty()) return new ArrayList<>();
 
         List<Integer> favoriteIds = new ArrayList<>();
         for (String id : favoritesString.split(",")) {

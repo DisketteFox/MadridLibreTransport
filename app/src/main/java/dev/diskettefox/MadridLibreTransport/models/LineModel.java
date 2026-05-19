@@ -36,6 +36,18 @@ public class LineModel {
         public String getColor() {
             return color;
         }
+        public void setLineId(int lineId) {
+            this.lineId = lineId;
+        }
+        public void setNameA(String nameA) {
+            this.nameA = nameA;
+        }
+        public void setNameB(String nameB) {
+            this.nameB = nameB;
+        }
+        public void setLabel(String label) {
+            this.label = label;
+        }
         public void setColor(String color) {
             this.color = color;
         }
