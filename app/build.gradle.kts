@@ -46,7 +46,8 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0")  // Apache 2.0
     implementation("com.squareup.retrofit2:converter-gson:3.0.0") // Apache 2.0
     implementation("com.github.chrisbanes:PhotoView:2.3.0") // Apache 2.0
-    implementation ("com.github.bumptech.glide:glide:5.0.5") // MIT and Apache 2.0
+    implementation ("com.github.bumptech.glide:glide:5.0.5")
+    implementation(libs.ui.viewbinding) // MIT and Apache 2.0
     annotationProcessor ("com.github.bumptech.glide:compiler:5.0.5") // MIT and Apache 2.0
     
     // MapsForge Map (GPLv3)
