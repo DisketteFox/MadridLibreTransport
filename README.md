@@ -1,4 +1,4 @@
-<p align=center><image src="./docs/images/logo.png" height="150" /></p>
+<p align=center><image src="./docs/images/logo.svg" height="150" /></p>
 <h1 align="center">Madrid Libre Transport</h1>
 <div display="flex" align=center>
     <a href="https://codeberg.org/DisketteFox/madrid-libre-transport/releases"><img alt="Get it on Codeberg" src="docs/images/badge-codeberg.png" height=100></a>
