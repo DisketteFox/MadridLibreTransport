@@ -23,6 +23,11 @@
             android:label="@string/title_activity_about"
             android:theme="@style/Theme.MadridBus" />
         <activity
+            android:name=".Settings"
+            android:exported="false"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.MadridBus" />
+        <activity
             android:name=".StopActivity"
             android:exported="true"
             android:label="@string/title_activity_stop"

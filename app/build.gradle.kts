@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.diskettefox.MadridLibreTransport"
+    namespace = "dev.diskettefox.madridtransport"
     compileSdk {
         version = release(36)
     }
@@ -70,6 +70,9 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.cardview)
     implementation(libs.lifecycle.runtime.ktx)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)

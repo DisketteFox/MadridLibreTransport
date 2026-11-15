@@ -23,6 +23,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Madrid Libre Transport"
+rootProject.name = "Madrid Transport"
 include(":app")
  
