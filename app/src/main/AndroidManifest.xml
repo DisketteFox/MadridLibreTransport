@@ -57,7 +57,8 @@
             android:theme="@style/Theme.MadridBus" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.MadridBus">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -8,7 +8,13 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.graphicsLayer
+import dev.diskettefox.madridtransport.ThemeManager
+import dev.diskettefox.madridtransport.ThemeMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -215,6 +221,29 @@ fun MapScreen(
     onLocate: () -> Unit,
     mapViewFactory: (android.content.Context) -> View
 ) {
+    val themeMode = ThemeManager.themeMode
+    val isSystemDark = isSystemInDarkTheme()
+    val isDark = when (themeMode) {
+        ThemeMode.SYSTEM -> isSystemDark
+        ThemeMode.LIGHT -> false
+        ThemeMode.DARK -> true
+    }
+
+    val colorFilter = remember(isDark) {
+        if (isDark) {
+            ColorFilter.colorMatrix(
+                ColorMatrix(
+                    floatArrayOf(
+                        -0.85f, 0f, 0f, 0f, 240f,
+                        0f, -0.85f, 0f, 0f, 240f,
+                        0f, 0f, -0.85f, 0f, 240f,
+                        0f, 0f, 0f, 1f, 0f
+                    )
+                )
+            )
+        } else null
+    }
+
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
@@ -238,7 +267,11 @@ fun MapScreen(
         ) {
             AndroidView(
                 factory = mapViewFactory,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        this.colorFilter = colorFilter
+                    }
             )
 
             Column(

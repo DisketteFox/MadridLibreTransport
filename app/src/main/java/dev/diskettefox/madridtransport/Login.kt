@@ -135,98 +135,118 @@ fun LoginScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 40.dp),
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Image(
                 painter = painterResource(id = R.drawable.ic_emt),
                 contentDescription = stringResource(R.string.description_emt_logo),
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(110.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                    .padding(24.dp)
+                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                    .padding(20.dp)
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = stringResource(R.string.mpass),
-                fontSize = 26.sp,
+                style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 20.dp)
+                textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            OutlinedTextField(
-                value = username,
-                onValueChange = { 
-                    username = it
-                    if (usernameError != null) usernameError = null
-                },
-                label = { Text(stringResource(R.string.user)) },
-                modifier = Modifier.fillMaxWidth(),
-                isError = usernameError != null,
-                supportingText = { usernameError?.let { Text(stringResource(it)) } },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                shape = MaterialTheme.shapes.medium
-            )
+            // Auth Card Container
+            Card(
+                shape = RoundedCornerShape(24.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    OutlinedTextField(
+                        value = username,
+                        onValueChange = { 
+                            username = it
+                            if (usernameError != null) usernameError = null
+                        },
+                        label = { Text(stringResource(R.string.user)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = usernameError != null,
+                        supportingText = { usernameError?.let { Text(stringResource(it)) } },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                        shape = RoundedCornerShape(16.dp)
+                    )
 
-            OutlinedTextField(
-                value = password,
-                onValueChange = { 
-                    password = it
-                    if (passwordError != null) passwordError = null
-                },
-                label = { Text(stringResource(R.string.password)) },
-                modifier = Modifier.fillMaxWidth(),
-                isError = passwordError != null,
-                supportingText = { passwordError?.let { Text(stringResource(it)) } },
-                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                trailingIcon = {
-                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.eye),
-                            contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = { 
+                            password = it
+                            if (passwordError != null) passwordError = null
+                        },
+                        label = { Text(stringResource(R.string.password)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        isError = passwordError != null,
+                        supportingText = { passwordError?.let { Text(stringResource(it)) } },
+                        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        trailingIcon = {
+                            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.eye),
+                                    contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                                )
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Button(
+                        onClick = { validateAndLogin() },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.login),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
                         )
                     }
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                shape = MaterialTheme.shapes.medium
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = { validateAndLogin() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(55.dp),
-                shape = MaterialTheme.shapes.extraLarge
-            ) {
-                Text(
-                    text = stringResource(R.string.login),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                }
             }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = stringResource(R.string.signup),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(top = 20.dp)
                     .clickable {
                         val browserIntent = Intent(Intent.ACTION_VIEW, "https://datos.emtmadrid.es/user/register".toUri())
                         context.startActivity(browserIntent)
                     }
+                    .padding(8.dp)
             )
             
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
