@@ -1,4 +1,4 @@
-Madrid Transporte Libre es una aplicación de código abierto que permite consultar los tiempos de espera de los autobuses y la información de las líneas en Madrid.
+Madrid Transport es una aplicación de código abierto que permite consultar los tiempos de espera de los autobuses y la información de las líneas en Madrid.
 
 Características:
 - Horarios de llegada de los autobuses en tiempo real.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Madrid Transporte Libre</string>
+    <string name="app_name">Madrid Transporte</string>
     <string name="version">v1.2.0</string>
     <string name="license">GNU GPLv3</string>
     <string name="love_signature">Made with ❤️ in Spain</string>
@@ -18,6 +18,7 @@
 
     <string name="line_start_time">Hora de inicio</string>
     <string name="line_end_time">Hora de fín</string>
+    <string name="line_service_hours">Horario de servicio</string>
     <string name="line_outward">Ida</string>
     <string name="line_return">Vuelta</string>
 
@@ -43,6 +44,8 @@
 
     <string name="message_favorite_add">Añadida a favoritos</string>
     <string name="message_favorite_remove">Eliminada de favoritos</string>
+    <string name="move_up">Mover arriba</string>
+    <string name="move_down">Mover abajo</string>
     <string name="message_successful_login">Sesión iniciada correctamente</string>
     <string name="message_invalid_credentials">Usuario o contraseña incorrectos</string>
     <string name="message_empty_username">El nombre de usuario no puede estar vacío</string>
@@ -82,4 +85,39 @@
     <string name="zoom_in">Acercar</string>
     <string name="zoom_out">Alejar</string>
     <string name="my_location">Mi ubicación</string>
+    <string name="rename">Renombrar</string>
+
+    <string name="settings_category_general">General</string>
+    <string name="settings_category_data">Datos y almacenamiento</string>
+    <string name="settings_category_account">Cuenta e información</string>
+    <string name="settings_clear_favorites">Borrar paradas favoritas</string>
+    <string name="settings_clear_favorites_summary">Eliminar todas las paradas favoritas guardadas</string>
+    <string name="settings_clear_favorites_confirm">¿Estás seguro de que deseas eliminar todas tus paradas favoritas?</string>
+    <string name="settings_favorites_cleared">Favoritos eliminados</string>
+    <string name="settings_account_status">Cuenta MPASS</string>
+    <string name="settings_account_summary">Gestionar sesión de usuario</string>
+    <string name="settings_about">Acerca de Madrid Transporte</string>
+    <string name="settings_about_summary">Versión de la app, licencia y créditos</string>
+
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_summary">Elige el tema de la aplicación</string>
+    <string name="theme_system">Predeterminado del sistema</string>
+    <string name="theme_light">Modo claro</string>
+    <string name="theme_dark">Modo oscuro</string>
+
+    <string name="settings_oled">Modo OLED</string>
+    <string name="settings_oled_summary">Usar fondo negro puro cuando el modo oscuro está activado</string>
+
+    <string name="settings_export_favorites">Exportar favoritos a JSON</string>
+    <string name="settings_export_favorites_summary">Guardar paradas favoritas en un archivo JSON</string>
+    <string name="settings_import_favorites">Importar favoritos desde JSON</string>
+    <string name="settings_import_favorites_summary">Restaurar paradas favoritas desde un archivo JSON</string>
+    <string name="settings_export_success">Favoritos exportados correctamente</string>
+    <string name="settings_export_empty">No hay favoritos para exportar</string>
+    <string name="settings_import_success">Favoritos importados correctamente</string>
+    <string name="settings_import_error">Error al importar favoritos</string>
+
+    <string name="about_category_general">General</string>
+    <string name="about_category_development">Desarrollo</string>
+    <string name="about_category_credits">Créditos</string>
 </resources>

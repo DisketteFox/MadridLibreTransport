@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="false">
 
-    <FrameLayout
-        android:id="@+id/frame_layout"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"

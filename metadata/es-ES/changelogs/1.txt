@@ -1,4 +1,4 @@
-Primera versión de Madrid Transporte Libre
+Primera versión de Madrid Transporte
 - Horarios de llegada de los autobuses de la EMT en tiempo real
 - Información sobre líneas y paradas
 - Gestión de favoritos

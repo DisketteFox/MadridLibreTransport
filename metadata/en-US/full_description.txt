@@ -1,4 +1,4 @@
-Madrid Libre Transport is an open-source application to check bus waiting times and line information in Madrid.
+Madrid Transport is an open-source application to check bus waiting times and line information in Madrid.
 
 Features:
 - Real-time bus arrival times.
