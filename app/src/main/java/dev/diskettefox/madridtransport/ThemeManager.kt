@@ -32,6 +32,7 @@ object ThemeManager {
             themeMode = try { ThemeMode.valueOf(modeStr) } catch (_: Exception) { ThemeMode.SYSTEM }
             isOledMode = prefs.getBoolean(KEY_OLED_MODE, false)
             initialized = true
+            applyNightMode(themeMode)
         }
     }
 
@@ -40,6 +41,15 @@ object ThemeManager {
         themeMode = mode
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit { putString(KEY_THEME_MODE, mode.name) }
+        applyNightMode(mode)
+    }
+
+    private fun applyNightMode(mode: ThemeMode) {
+        when (mode) {
+            ThemeMode.SYSTEM -> androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            ThemeMode.LIGHT -> androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO)
+            ThemeMode.DARK -> androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 
     fun setOledMode(context: Context, enabled: Boolean) {

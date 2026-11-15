@@ -112,6 +112,7 @@ fun SettingsScreen(
                         onClick = {
                             ThemeManager.setThemeMode(context, ThemeMode.SYSTEM)
                             showThemeDialog = false
+                            (context as? android.app.Activity)?.recreate()
                         }
                     )
                     ThemeOptionRow(
@@ -120,6 +121,7 @@ fun SettingsScreen(
                         onClick = {
                             ThemeManager.setThemeMode(context, ThemeMode.LIGHT)
                             showThemeDialog = false
+                            (context as? android.app.Activity)?.recreate()
                         }
                     )
                     ThemeOptionRow(
@@ -128,6 +130,7 @@ fun SettingsScreen(
                         onClick = {
                             ThemeManager.setThemeMode(context, ThemeMode.DARK)
                             showThemeDialog = false
+                            (context as? android.app.Activity)?.recreate()
                         }
                     )
                 }
@@ -221,7 +224,10 @@ fun SettingsScreen(
                     summary = stringResource(R.string.settings_oled_summary),
                     iconPainter = painterResource(id = R.drawable.eye),
                     checked = isOledMode,
-                    onCheckedChange = { ThemeManager.setOledMode(context, it) }
+                    onCheckedChange = { 
+                        ThemeManager.setOledMode(context, it)
+                        (context as? android.app.Activity)?.recreate()
+                    }
                 )
             }
 

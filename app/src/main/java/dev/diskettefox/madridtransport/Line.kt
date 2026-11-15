@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.WbSunny
@@ -134,13 +136,13 @@ fun LineScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(
-                    modifier = Modifier.padding(15.dp),
+                    modifier = Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val colors = getLineColors(lineColorStr)
                     Box(
                         modifier = Modifier
-                            .size(60.dp)
+                            .size(64.dp)
                             .clip(CircleShape)
                             .background(colors.first),
                         contentAlignment = Alignment.Center
@@ -148,17 +150,59 @@ fun LineScreen(
                         Text(
                             text = lineLabel,
                             color = colors.second,
-                            fontSize = 20.sp,
+                            fontSize = 22.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(15.dp))
+                    Row(
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .weight(1f),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.width(16.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .background(colors.first, CircleShape)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .width(2.dp)
+                                    .height(28.dp)
+                                    .background(MaterialTheme.colorScheme.outlineVariant)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .size(8.dp)
+                                    .background(MaterialTheme.colorScheme.onSurfaceVariant, CircleShape)
+                            )
+                        }
 
-                    Column {
-                        Text(text = nameA, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(text = nameB, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = nameA,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                maxLines = 1
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = nameB,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 1
+                            )
+                        }
                     }
                 }
             }
@@ -272,8 +316,10 @@ fun LineScreen(
             val pagerState = rememberPagerState(pageCount = { 2 })
             val scope = rememberCoroutineScope()
 
-            Column {
-                TabRow(selectedTabIndex = pagerState.currentPage) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                PrimaryTabRow(selectedTabIndex = pagerState.currentPage) {
                     Tab(
                         selected = pagerState.currentPage == 0,
                         onClick = { scope.launch { pagerState.animateScrollToPage(0) } },
@@ -286,37 +332,69 @@ fun LineScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                // Direction Info pill
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = if (pagerState.currentPage == 0) "$nameA ➔ $nameB" else "$nameB ➔ $nameA",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
 
-                HorizontalPager(
-                    state = pagerState,
+                // Schedule Image Card Pager
+                Card(
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(600.dp)
-                ) { page ->
-                    val url = if (page == 0) {
-                        "https://www.madridbuses.com/img/autobuses-emt/horario-ida-linea-$lineLabel-madrid-completo.png"
-                    } else {
-                        "https://www.madridbuses.com/img/autobuses-emt/horario-vuelta-linea-$lineLabel-madrid-completo.png"
-                    }
-
-                    AndroidView(
-                        factory = { context ->
-                            PhotoView(context).apply {
-                                layoutParams = ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT
-                                )
-                                scaleType = ImageView.ScaleType.FIT_CENTER
-                            }
-                        },
-                        update = { photoView ->
-                            Glide.with(photoView.context)
-                                .load(url)
-                                .into(photoView)
-                        },
+                        .height(550.dp)
+                ) {
+                    HorizontalPager(
+                        state = pagerState,
                         modifier = Modifier.fillMaxSize()
-                    )
+                    ) { page ->
+                        val url = if (page == 0) {
+                            "https://www.madridbuses.com/img/autobuses-emt/horario-ida-linea-$lineLabel-madrid-completo.png"
+                        } else {
+                            "https://www.madridbuses.com/img/autobuses-emt/horario-vuelta-linea-$lineLabel-madrid-completo.png"
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(8.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            AndroidView(
+                                factory = { context ->
+                                    PhotoView(context).apply {
+                                        layoutParams = ViewGroup.LayoutParams(
+                                            ViewGroup.LayoutParams.MATCH_PARENT,
+                                            ViewGroup.LayoutParams.MATCH_PARENT
+                                        )
+                                        scaleType = ImageView.ScaleType.FIT_CENTER
+                                    }
+                                },
+                                update = { photoView ->
+                                    Glide.with(photoView.context)
+                                        .load(url)
+                                        .into(photoView)
+                                },
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
                 }
             }
         }

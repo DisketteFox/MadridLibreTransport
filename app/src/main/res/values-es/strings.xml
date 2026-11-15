@@ -15,6 +15,7 @@
 
     <string name="title_line_details">Detalles de línea</string>
     <string name="title_stop_details">Detalles de parada</string>
+    <string name="stop_label">Parada de autobús</string>
 
     <string name="line_start_time">Hora de inicio</string>
     <string name="line_end_time">Hora de fín</string>

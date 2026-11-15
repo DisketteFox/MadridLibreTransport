@@ -35,12 +35,28 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var bottomNav: BottomNavigationView
 
+    private var lastThemeMode: ThemeMode? = null
+    private var lastOledMode: Boolean? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        ThemeManager.ensureInitialized(this)
+        lastThemeMode = ThemeManager.themeMode
+        lastOledMode = ThemeManager.isOledMode
         setContentView(R.layout.activity_main)
 
         getToken()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ThemeManager.ensureInitialized(this)
+        if (lastThemeMode != null && (lastThemeMode != ThemeManager.themeMode || lastOledMode != ThemeManager.isOledMode)) {
+            recreate()
+        }
+        lastThemeMode = ThemeManager.themeMode
+        lastOledMode = ThemeManager.isOledMode
     }
 
     fun loadMain() {
@@ -87,6 +103,9 @@ class MainActivity : AppCompatActivity() {
         ld.visibility = View.GONE
         viewPager.visibility = View.VISIBLE
         bottomNav.visibility = View.VISIBLE
+        if (ThemeManager.isOledMode) {
+            bottomNav.setBackgroundColor(android.graphics.Color.BLACK)
+        }
     }
 
     fun getToken() {

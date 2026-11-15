@@ -215,7 +215,7 @@ fun LineItem(
     ) {
         Row(
             modifier = Modifier
-                .padding(14.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -234,21 +234,54 @@ fun LineItem(
                 )
             }
 
-            Column(
+            Row(
                 modifier = Modifier
-                    .padding(start = 14.dp)
-                    .weight(1f)
+                    .padding(start = 16.dp)
+                    .weight(1f),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = line.nameA,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = line.nameB,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.width(16.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .background(colors.background, CircleShape)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .width(2.dp)
+                            .height(28.dp)
+                            .background(MaterialTheme.colorScheme.outlineVariant)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(8.dp)
+                            .background(MaterialTheme.colorScheme.onSurfaceVariant, CircleShape)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = line.nameA,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = line.nameB,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1
+                    )
+                }
             }
         }
     }
