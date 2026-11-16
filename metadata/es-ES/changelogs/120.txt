@@ -1,0 +1,8 @@
+Migración de múltiples actividades a Kotlin
+
+Nuevas características
+- Añadido OpenStreetMap
+- Añadida redirección de enlaces de códigos QR en paradas
+
+Correcciones de errores
+- Se ha corregido el funcionamiento de los favoritos

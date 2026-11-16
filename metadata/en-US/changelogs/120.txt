@@ -1,0 +1,9 @@
+Migrated multiple activities to Kotlin
+
+New features
+- Added Open Street Map
+- Added stop QR code link redirection
+
+Bugfixes
+- Fixed non-working Favorites
+

@@ -1,0 +1,15 @@
+App fully translated to Kotlin and partial redesign
+
+New features
+- Change name, delete and move favorites from the home page
+- Reload by sliding down on Stop details
+- Slide horizontally from page to page
+- Settings page
+- Theme changer
+- OLED mode
+- Export and import favorites from JSON
+- Map dark mode
+
+Bugfixes
+- "No favorites" screen not appearing
+- Some Line details route images not appearing
