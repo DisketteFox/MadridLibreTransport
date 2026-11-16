@@ -1,48 +1,90 @@
-<p align=center><image src="./docs/images/logo.svg" height="150" /></p>
+<p align=center>
+    <img src="./docs/images/logo.svg" height="150" alt="Madrid Transport Logo" />
+</p>
+
 <h1 align="center">Madrid Transport</h1>
+
 <div display="flex" align=center>
     <a href="https://codeberg.org/DisketteFox/madrid-libre-transport/releases"><img alt="Get it on Codeberg" src="docs/images/badge-codeberg.png" height=100></a>
     <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/DisketteFox/madrid-libre-transport/"><img alt="Get it on Obtanium" src="docs/images/badge-obtanium.png" height=100></a>
 </div>
 
-**Madrid Transport** is an open source Android app that offers real time information about EMT buses arriving time, lines information and routes of these lines.
 
-## Features
+<p align="center">
+  <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License AGPL v3">
+  <img src="https://img.shields.io/badge/Android-8.0%2B%20(API%2026%2B)-green.svg" alt="Android Version">
+  <img src="https://img.shields.io/badge/Kotlin-100%25-orange.svg" alt="Kotlin">
+  <img src="https://img.shields.io/badge/UI-Material%203-6750A4.svg" alt="Material 3">
+</p>
 
-| Name       | Description                                                             |
-|------------|-------------------------------------------------------------------------|
-| **Stops**  | Checks stop information such as bus arrival times                       |
-| **Lines**  | Checks bus schedules and routes by line                                 |
-| **Maps**   | Complete public transportation map of the *Community of Madrid*         |
-| **Design** | It has a theme based on Material 3, matching the colors of your device. |
+---
+
+**Madrid Transport** is a free open-source Android app that offers real time information about EMT Madrid bus time arrivals, lines schedules and route details, and interactive transit maps.
+
+---
 
 ## Screenshots
 
-<div display="flex" align=center>
-    <img src="./docs/images/scr1.png" width=29% style="margin-right: 20px;">
-    <img src="./docs/images/scr2.png" width=29% style="margin-right: 20px">
-    <img src="./docs/images/scr3.png" width=29%>
-</div>
+<p align="center">
+  <img src="./docs/screenshots/scr1.png" width="30%" />
+  <img src="./docs/screenshots/scr2.png" width="30%" />
+  <img src="./docs/screenshots/scr3.png" width="30%" />
+</p>
+
+<p align="center">
+  <img src="./docs/screenshots/scr4.png" width="30%" />
+  <img src="./docs/screenshots/scr5.png" width="30%" />
+  <img src="./docs/screenshots/scr6.png" width="30%" />
+</p>
+
+---
+
+# Features
+
+- **Real-Time Bus Arrivals**: Query any EMT bus stop to check live arrival times and bus status.
+- **Lines & Routes**: Browse EMT line routes, detailed stops, and operating schedules.
+- **Interactive Maps**: Built-in public transport maps for the *Community of Madrid* powered by MapsForge.
+- **Favorites Management**: Save and organize your most frequented stops and lines for quick access.
+- **Material You Design**: Built with Material 3, supporting system dynamic color matching as well as EMT signature brand colors.
+- **Multilingual**: Available in English and Spanish.
+
+---
+
+## Build
+
+1. Clone the repository:
+   ```bash
+   git clone https://codeberg.org/DisketteFox/madrid-libre-transport.git
+   cd madrid-libre-transport
+    ```
+2. Open the project in Android Studio (Ladybug or newer recommended).
+3. Ensure you have JDK 11 or higher configured.
+4. Build and run the app:
+   ```bash
+    ./gradlew assembleDebug
+   ```
+
+---
+
+## Tech Stack & Architecture
+
+- **Language**: [Kotlin](https://kotlinlang.org/)
+- **UI Framework**: Jetpack Compose & Material 3 components
+- **Networking**: [Retrofit 2](https://square.github.io/retrofit/) + [OkHttp 5](https://square.github.io/okhttp/) + Gson
+- **Map Rendering**: [MapsForge](https://github.com/mapsforge/mapsforge) vector map engine
+- **Async & Architecture**: Kotlin Coroutines, StateFlow, AndroidX ViewModel, ViewBinding
+- **Image Loading**: [Coil 3](https://coil-kt.github.io/coil/) & Glide
+
+---
 
 ## Requirements
 
-- A device with Android
-- Internet connexion
-- At least 210mb of free space
+- **OS**: Android 8.0 (API level 26) or higher
+- **Network**: Active internet connection (for live arrival data)
+- **Storage**: ~210 MB available space
 
-## Design
-
-It uses Material 3 as main theme, but there are also hard-coded colors based on EMT's colors.
-
-| Color                                                                                                        | Hex       |
-|--------------------------------------------------------------------------------------------------------------|-----------|
-| <img src="./docs/images/color-blue.png" style="margin-top: 5px; margin-right: 5px"> **EMT blue**             | `#0072ce` |
-| <img src="./docs/images/color-turquoise.png" style="margin-top: 5px; margin-right: 5px"> **Madrid 360 blue** | `#00aecf` |
-| <img src="./docs/images/color-lightblue.png" style="margin-top: 5px; margin-right: 5px"> **Light blue**      | `#7bb7e9` |
-| <img src="./docs/images/color-gold.png" style="margin-top: 5px; margin-right: 5px"> **Golden yellow**        | `#f8dd43` |
-| <img src="./docs/images/color-yellow.png" style="margin-top: 5px; margin-right: 5px"> **Yellow**             | `#ede939` |
-| <img src="./docs/images/color-brown.png" style="margin-top: 5px; margin-right: 5px"> **Brown**               | `#764709` |
+---
 
 ## License
 
-Licensed under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
+Madrid Transport is licensed under the [GNU Affero General Public License v3.0 or later](https://www.gnu.org/licenses/agpl-3.0.html) (AGPL-3.0-or-later). See the `LICENSE` file for the full text.
