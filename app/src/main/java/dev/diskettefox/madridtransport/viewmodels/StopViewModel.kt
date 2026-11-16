@@ -40,6 +40,7 @@ class StopViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         fetchAllStops()
+        refreshFavorites()
     }
 
     fun fetchAllStops() {
@@ -162,7 +163,7 @@ class StopViewModel(application: Application) : AndroidViewModel(application) {
         val currentIds = FavoritesManager.getFavorites(getApplication())
         val currentNames = currentIds.associateWith { FavoritesManager.getFavoriteName(getApplication(), it.toString()) }
         
-        if (currentIds != lastLoadedStopIds || currentNames != lastLoadedNames) {
+        if (currentIds != lastLoadedStopIds || currentNames != lastLoadedNames || (_uiState.value.stopsList.isEmpty() && !_uiState.value.isNoFavorites && currentIds.isNotEmpty())) {
             refreshFavorites()
         }
     }

@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                 if (bottomNav.selectedItemId != itemId) {
                     bottomNav.selectedItemId = itemId
                 }
-                viewPager.isUserInputEnabled = (position != NAV_MAP)
             }
         })
 

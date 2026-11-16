@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,10 +15,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,18 +90,14 @@ fun LinesScreen(
     onLineClick: (LineModel.Data, String) -> Unit = { _, _ -> }
 ) {
     val context = LocalContext.current
-    var searchQuery by remember { mutableStateOf("") }
-    
+    var isSearchActive by rememberSaveable { mutableStateOf(false) }
+
+    BackHandler(enabled = isSearchActive) {
+        isSearchActive = false
+    }
+
     var isLoading by remember { mutableStateOf(lines.isEmpty()) }
     var isNoConnection by remember { mutableStateOf(false) }
-
-    val filteredLines = remember(searchQuery, lines.size) {
-        if (searchQuery.isEmpty()) {
-            lines
-        } else {
-            lines.filter { it.label.contains(searchQuery, ignoreCase = true) }
-        }
-    }
 
     val accessToken = ApiCall.token
 
@@ -138,17 +138,19 @@ fun LinesScreen(
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.title_activity_line),
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 24.sp,
-                        letterSpacing = (-0.5).sp
-                    )
-                }
-            )
+            if (!isSearchActive) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = stringResource(R.string.title_activity_line),
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = 24.sp,
+                            letterSpacing = (-0.5).sp
+                        )
+                    }
+                )
+            }
         }
     ) { padding ->
         Column(
@@ -156,41 +158,154 @@ fun LinesScreen(
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            SearchBar(
-                inputField = {
-                    SearchBarDefaults.InputField(
-                        query = searchQuery,
-                        onQueryChange = { searchQuery = it },
-                        onSearch = { },
-                        expanded = false,
-                        onExpandedChange = { },
-                        placeholder = { Text(stringResource(R.string.search_lines)) },
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) }
-                    )
-                },
-                expanded = false,
-                onExpandedChange = { },
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
-            ) { }
+            LineSearchBar(
+                lines = lines,
+                active = isSearchActive,
+                onActiveChange = { isSearchActive = it },
+                onLineClick = onLineClick
+            )
 
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (isLoading && lines.isEmpty()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else if (isNoConnection && lines.isEmpty()) {
-                    NoConnectionView()
-                } else {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        contentPadding = PaddingValues(bottom = 16.dp, start = 16.dp, end = 16.dp)
-                    ) {
-                        items(filteredLines) { line ->
-                            LineItem(line, onLineClick)
+            if (!isSearchActive) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    if (isLoading && lines.isEmpty()) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    } else if (isNoConnection && lines.isEmpty()) {
+                        NoConnectionView()
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            contentPadding = PaddingValues(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                        ) {
+                            items(
+                                items = lines,
+                                key = { it.lineId },
+                                contentType = { "line_item" }
+                            ) { line ->
+                                LineItem(line, onLineClick)
+                            }
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LineSearchBar(
+    lines: List<LineModel.Data>,
+    active: Boolean,
+    onActiveChange: (Boolean) -> Unit,
+    onLineClick: (LineModel.Data, String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var query by rememberSaveable { mutableStateOf("") }
+    val context = LocalContext.current
+
+    val filteredLines = remember(query, lines.size) {
+        if (query.isEmpty()) {
+            lines
+        } else {
+            lines.filter {
+                it.label.contains(query, ignoreCase = true) ||
+                it.nameA.contains(query, ignoreCase = true) ||
+                it.nameB.contains(query, ignoreCase = true) ||
+                it.lineId.toString().contains(query)
+            }
+        }
+    }
+
+    SearchBar(
+        inputField = {
+            SearchBarDefaults.InputField(
+                query = query,
+                onQueryChange = { query = it },
+                onSearch = { queryText ->
+                    if (queryText.isNotBlank()) {
+                        val trimmed = queryText.trim()
+                        val match = lines.find {
+                            it.label.equals(trimmed, ignoreCase = true) ||
+                            it.lineId.toString() == trimmed
+                        } ?: filteredLines.firstOrNull()
+
+                        if (match != null) {
+                            onLineClick(match, getLineColors(match).colorName)
+                            onActiveChange(false)
+                        } else {
+                            val intent = Intent(context, LineActivity::class.java).apply {
+                                putExtra("lineId", trimmed.toIntOrNull() ?: 0)
+                                putExtra("lineLabel", trimmed)
+                                putExtra("dsA", "")
+                                putExtra("dsB", "")
+                                putExtra("lineColor", "blue")
+                            }
+                            context.startActivity(intent)
+                            onActiveChange(false)
+                        }
+                    }
+                },
+                expanded = active,
+                onExpandedChange = onActiveChange,
+                placeholder = { Text(stringResource(R.string.search_lines)) },
+                leadingIcon = {
+                    if (active) {
+                        IconButton(onClick = { onActiveChange(false) }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
+                    } else {
+                        Icon(Icons.Default.Search, contentDescription = null)
+                    }
+                },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { query = "" }) {
+                            Icon(Icons.Default.Close, contentDescription = "Clear")
+                        }
+                    }
+                }
+            )
+        },
+        expanded = active,
+        onExpandedChange = onActiveChange,
+        windowInsets = WindowInsets(0, 0, 0, 0),
+        modifier = modifier
+            .fillMaxWidth()
+            .then(if (active) Modifier.statusBarsPadding() else Modifier)
+            .padding(horizontal = if (active) 0.dp else 16.dp)
+            .padding(bottom = if (active) 0.dp else 8.dp)
+    ) {
+        if (filteredLines.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.no_connection),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                items(
+                    items = filteredLines,
+                    key = { it.lineId },
+                    contentType = { "line_suggestion" }
+                ) { line ->
+                    LineItem(
+                        line = line,
+                        onLineClick = { selectedLine, colorName ->
+                            onLineClick(selectedLine, colorName)
+                            onActiveChange(false)
+                        }
+                    )
                 }
             }
         }
@@ -313,7 +428,6 @@ fun NoConnectionView() {
 
 private data class LineColors(val background: Color, val text: Color, val colorName: String)
 
-@Composable
 private fun getLineColors(line: LineModel.Data): LineColors {
     return when (line.lineId) {
         in 501..599 -> LineColors(black, gold, "black")
