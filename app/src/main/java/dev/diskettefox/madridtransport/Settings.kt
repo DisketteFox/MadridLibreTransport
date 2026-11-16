@@ -1,6 +1,7 @@
 package dev.diskettefox.madridtransport
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -227,6 +228,26 @@ fun SettingsScreen(
                     onCheckedChange = { 
                         ThemeManager.setOledMode(context, it)
                         (context as? android.app.Activity)?.recreate()
+                    }
+                )
+                InfoDivider()
+                SettingRow(
+                    label = stringResource(R.string.settings_app_links),
+                    summary = stringResource(R.string.settings_app_links_summary),
+                    iconPainter = painterResource(id = R.drawable.open_in_new),
+                    onClick = {
+                        val intent = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                            Intent(
+                                android.provider.Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
+                                Uri.parse("package:${context.packageName}")
+                            )
+                        } else {
+                            Intent(
+                                android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.parse("package:${context.packageName}")
+                            )
+                        }
+                        context.startActivity(intent)
                     }
                 )
             }
