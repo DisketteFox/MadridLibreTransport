@@ -1,0 +1,15 @@
+Aplicación completamente traducida a Kotlin y rediseño parcial
+
+Nuevas características
+- Cambiar nombre, eliminar y mover favoritos desde la página de inicio
+- Recargar deslizando hacia abajo en los detalles de parada
+- Deslizar horizontalmente de una página a otra
+- Página de ajustes
+- Selector de tema
+- Modo OLED
+- Exportar e importar favoritos desde JSON
+- Modo oscuro en el mapa
+
+Correcciones de errores
+- La pantalla de "Sin favoritos" no aparecía
+- Algunas imágenes de ruta en los detalles de las líneas no aparecían

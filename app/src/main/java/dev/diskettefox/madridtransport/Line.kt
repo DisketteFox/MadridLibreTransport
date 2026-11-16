@@ -365,9 +365,9 @@ fun LineScreen(
                         modifier = Modifier.fillMaxSize()
                     ) { page ->
                         val url = if (page == 0) {
-                            "https://www.madridbuses.com/img/autobuses-emt/horario-ida-linea-$lineLabel-madrid-completo.png"
+                            "https://www.madridbuses.com/img/autobuses-emt/horario-ida-linea-${lineLabel.lowercase()}-madrid-completo.png"
                         } else {
-                            "https://www.madridbuses.com/img/autobuses-emt/horario-vuelta-linea-$lineLabel-madrid-completo.png"
+                            "https://www.madridbuses.com/img/autobuses-emt/horario-vuelta-linea-${lineLabel.lowercase()}-madrid-completo.png"
                         }
 
                         Box(
