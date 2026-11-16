@@ -4,18 +4,17 @@
 
 <h1 align="center">Madrid Transport</h1>
 
-<div display="flex" align=center>
-    <a href="https://codeberg.org/DisketteFox/madrid-libre-transport/releases"><img alt="Get it on Codeberg" src="docs/images/badge-codeberg.png" height=100></a>
-    <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/DisketteFox/madrid-libre-transport/"><img alt="Get it on Obtanium" src="docs/images/badge-obtanium.png" height=100></a>
-</div>
-
-
 <p align="center">
   <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License AGPL v3">
   <img src="https://img.shields.io/badge/Android-8.0%2B%20(API%2026%2B)-green.svg" alt="Android Version">
   <img src="https://img.shields.io/badge/Kotlin-100%25-orange.svg" alt="Kotlin">
   <img src="https://img.shields.io/badge/UI-Material%203-6750A4.svg" alt="Material 3">
 </p>
+
+<div display="flex" align=center>
+    <a href="https://codeberg.org/DisketteFox/madrid-libre-transport/releases"><img alt="Get it on Codeberg" src="docs/images/badge-codeberg.png" height=100></a>
+    <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/DisketteFox/madrid-libre-transport/"><img alt="Get it on Obtanium" src="docs/images/badge-obtanium.png" height=100></a>
+</div>
 
 ---
 
