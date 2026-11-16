@@ -1,6 +1,7 @@
 package dev.diskettefox.madridtransport.fragments
 
 import android.Manifest.permission.*
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
@@ -82,6 +83,7 @@ class FragmentMap : Fragment(), Observer {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?): View {
         return ComposeView(requireContext()).apply {
             setContent {
@@ -103,6 +105,17 @@ class FragmentMap : Fragment(), Observer {
                                     model.mapViewPosition.apply {
                                         addObserver(this@FragmentMap)
                                         center = DEFAULT_CENTER
+                                    }
+                                    setOnTouchListener { v, event ->
+                                        when (event.action) {
+                                            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                                                v.parent?.requestDisallowInterceptTouchEvent(true)
+                                            }
+                                            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                                                v.parent?.requestDisallowInterceptTouchEvent(false)
+                                            }
+                                        }
+                                        false
                                     }
                                 }
                                 OpenStreetMapMapnik.INSTANCE.userAgent = "MadridTransport"

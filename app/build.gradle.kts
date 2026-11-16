@@ -10,11 +10,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "dev.diskettefox.madridbus"
+        applicationId = "dev.diskettefox.madridtransport"
         minSdk = 26
         targetSdk = 36
-        versionCode = 120
-        versionName = "v1.2.0"
+        versionCode = 150
+        versionName = "v1.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
