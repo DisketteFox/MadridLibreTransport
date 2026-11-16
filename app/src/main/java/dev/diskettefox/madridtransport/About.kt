@@ -177,7 +177,7 @@ fun AboutScreen(
 
             CardSection {
                 InfoRow(
-                    label = "MADE WITH LOVE",
+                    label = "Made with love",
                     value = "In Spain",
                     iconPainter = painterResource(id = R.drawable.favorite),
                     onClick = {},
@@ -238,22 +238,19 @@ private fun InfoRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelSmall.copy(
-                    fontSize = 10.sp,
-                    letterSpacing = 1.5.sp
-                ),
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
-            )
-            Text(
-                text = value,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
-                letterSpacing = (-0.25).sp,
                 lineHeight = 22.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                lineHeight = 18.sp
             )
         }
 
@@ -271,7 +268,7 @@ private fun InfoRow(
 @Composable
 private fun CategoryHeader(title: String) {
     Text(
-        text = title.uppercase(),
+        text = title,
         style = MaterialTheme.typography.labelSmall.copy(
             fontSize = 12.sp,
             letterSpacing = 1.2.sp

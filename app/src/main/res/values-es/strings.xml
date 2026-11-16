@@ -63,12 +63,12 @@
     <string name="login">Iniciar sesión</string>
     <string name="signup">¿No tienes cuenta? Regístrate</string>
 
-    <string name="title_app">APP</string>
-    <string name="title_developer">DESARROLLADOR</string>
-    <string name="title_source_code">CÓDIGO FUENTE</string>
-    <string name="title_version">VERSIÓN</string>
-    <string name="title_database">BASE DE DATOS</string>
-    <string name="title_license">LICENCIA</string>
+    <string name="title_app">App</string>
+    <string name="title_developer">Desarrollador</string>
+    <string name="title_source_code">Códifo fuente</string>
+    <string name="title_version">Versión</string>
+    <string name="title_database">Base de datos</string>
+    <string name="title_license">Licencia</string>
     <string name="api1">OpenAPI EMT Madrid</string>
     <string name="developer">DisketteFox</string>
 
@@ -121,4 +121,7 @@
     <string name="about_category_general">General</string>
     <string name="about_category_development">Desarrollo</string>
     <string name="about_category_credits">Créditos</string>
+
+    <string name="settings_app_links">Abrir enlaces compatibles</string>
+    <string name="settings_app_links_summary">Configurar el comportamiento de apertura de enlaces en los ajustes del sistema</string>
 </resources>
