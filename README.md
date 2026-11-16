@@ -16,11 +16,7 @@
     <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/DisketteFox/madrid-libre-transport/"><img alt="Get it on Obtanium" src="docs/images/badge-obtanium.png" height=100></a>
 </div>
 
----
-
 **Madrid Transport** is a free open-source Android app that offers real time information about EMT Madrid bus time arrivals, lines schedules and route details, and interactive transit maps.
-
----
 
 ## Screenshots
 
@@ -36,8 +32,6 @@
   <img src="./docs/screenshots/scr6.png" width="30%" />
 </p>
 
----
-
 # Features
 
 - **Real-Time Bus Arrivals**: Query any EMT bus stop to check live arrival times and bus status.
@@ -46,8 +40,6 @@
 - **Favorites Management**: Save and organize your most frequented stops and lines for quick access.
 - **Material You Design**: Built with Material 3, supporting system dynamic color matching as well as EMT signature brand colors.
 - **Multilingual**: Available in English and Spanish.
-
----
 
 ## Build
 
@@ -63,8 +55,6 @@
     ./gradlew assembleDebug
    ```
 
----
-
 ## Tech Stack & Architecture
 
 - **Language**: [Kotlin](https://kotlinlang.org/)
@@ -74,15 +64,11 @@
 - **Async & Architecture**: Kotlin Coroutines, StateFlow, AndroidX ViewModel, ViewBinding
 - **Image Loading**: [Coil 3](https://coil-kt.github.io/coil/) & Glide
 
----
-
 ## Requirements
 
 - **OS**: Android 8.0 (API level 26) or higher
 - **Network**: Active internet connection (for live arrival data)
 - **Storage**: ~210 MB available space
-
----
 
 ## License
 
