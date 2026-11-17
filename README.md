@@ -12,8 +12,8 @@
 </p>
 
 <div display="flex" align=center>
-    <a href="https://codeberg.org/DisketteFox/madrid-libre-transport/releases"><img alt="Get it on Codeberg" src="docs/images/badge-codeberg.png" height=100></a>
-    <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/DisketteFox/madrid-libre-transport/"><img alt="Get it on Obtanium" src="docs/images/badge-obtanium.png" height=100></a>
+    <a href="https://codeberg.org/DisketteFox/madrid-transport/releases"><img alt="Get it on Codeberg" src="docs/images/badge-codeberg.png" height=100></a>
+    <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://codeberg.org/DisketteFox/madrid-transport/"><img alt="Get it on Obtanium" src="docs/images/badge-obtanium.png" height=100></a>
 </div>
 
 **Madrid Transport** is a free open-source Android app that offers real time information about EMT Madrid bus time arrivals, lines schedules and route details, and interactive transit maps.
@@ -45,8 +45,8 @@
 
 1. Clone the repository:
    ```bash
-   git clone https://codeberg.org/DisketteFox/madrid-libre-transport.git
-   cd madrid-libre-transport
+   git clone https://codeberg.org/DisketteFox/madrid-transport.git
+   cd madrid-transport
     ```
 2. Open the project in Android Studio (Ladybug or newer recommended).
 3. Ensure you have JDK 11 or higher configured.
